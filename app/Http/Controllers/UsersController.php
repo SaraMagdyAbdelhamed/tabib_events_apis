@@ -73,6 +73,7 @@ class UsersController extends Controller {
             //dd($mail);
 
         }
+        
         return Helpers::Get_Response(200, 'success', '', $validator->errors(),array($user_array) );
     }
 

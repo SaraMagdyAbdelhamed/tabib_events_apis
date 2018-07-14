@@ -1,23 +1,23 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "content-hash": "b6ea62cca5839d878a0a0c10f6a8bfd8",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.62.14",
+            "version": "3.63.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "ae9574e690c48fb31846d3f20fc080f54e422cd6"
+                "reference": "d67dc8846739f4a1f93f25ce5d5cbfb3a555530d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ae9574e690c48fb31846d3f20fc080f54e422cd6",
-                "reference": "ae9574e690c48fb31846d3f20fc080f54e422cd6",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d67dc8846739f4a1f93f25ce5d5cbfb3a555530d",
+                "reference": "d67dc8846739f4a1f93f25ce5d5cbfb3a555530d",
                 "shasum": ""
             },
             "require": {
@@ -84,7 +84,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-07-11T21:28:38+00:00"
+            "time": "2018-07-13T21:46:58+00:00"
         },
         {
             "name": "defuse/php-encryption",
@@ -3074,16 +3074,16 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v6.1.1",
+            "version": "v6.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "aa899fef280b1c1aec8d5d4ac069af7f80c89a23"
+                "reference": "7d760881d266d63c5e7a1155cbcf2ac656a31ca8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/aa899fef280b1c1aec8d5d4ac069af7f80c89a23",
-                "reference": "aa899fef280b1c1aec8d5d4ac069af7f80c89a23",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/7d760881d266d63c5e7a1155cbcf2ac656a31ca8",
+                "reference": "7d760881d266d63c5e7a1155cbcf2ac656a31ca8",
                 "shasum": ""
             },
             "require": {
@@ -3129,7 +3129,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2018-07-04T11:12:44+00:00"
+            "time": "2018-07-13T07:04:35+00:00"
         },
         {
             "name": "symfony/console",
@@ -5020,16 +5020,16 @@
         },
         {
             "name": "sebastian/comparator",
-            "version": "3.0.1",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "591a30922f54656695e59b1f39501aec513403da"
+                "reference": "5de4fc177adf9bce8df98d8d141a7559d7ccf6da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/591a30922f54656695e59b1f39501aec513403da",
-                "reference": "591a30922f54656695e59b1f39501aec513403da",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/5de4fc177adf9bce8df98d8d141a7559d7ccf6da",
+                "reference": "5de4fc177adf9bce8df98d8d141a7559d7ccf6da",
                 "shasum": ""
             },
             "require": {
@@ -5080,7 +5080,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2018-06-14T15:05:28+00:00"
+            "time": "2018-07-12T15:12:46+00:00"
         },
         {
             "name": "sebastian/diff",
