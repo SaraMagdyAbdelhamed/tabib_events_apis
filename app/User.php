@@ -33,4 +33,39 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $hidden = [
         'password',
     ];
+
+    public static $rules = [ 'first_name' => 'between:1,12',
+    'last_name' => 'between:1,12',
+    'email' => 'email|unique:users|max:35',
+    // 'city_id' => 'required',
+    'mobile' => 'required|numeric|unique:users',
+    'tele_code'=>'required',
+    'password' => 'required|between:8,20',
+    'mobile_os' => 'in:android,ios',
+    'lang_id' => 'in:1,2'];
+
+        // Relationships
+    public function rules()
+    {
+    return $this->belongsToMany('App\Rule', 'user_rules', 'user_id', 'rule_id');
+    }
+    
+    public function getPhotoAttribute($value)
+    {
+        $base_url = 'http://eventakom.com/eventakom_dev/public/';
+        $photo = $base_url.$value;
+        return $photo;
+    }
+
+
+     public function setBirthDateAttribute($value)
+    {
+        if(Helpers::isValidTimestamp($value))
+        {
+        $this->attributes['birthdate'] = gmdate("Y-m-d\TH:i:s\Z",$value);
+        }else{
+
+          return Helpers::Get_Response(403, 'error', trans('Invalid date format'), [], []);   
+        }
+    }
 }

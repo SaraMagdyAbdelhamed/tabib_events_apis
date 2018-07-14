@@ -71,5 +71,75 @@ class Helpers
           });
     }
 
+    public static function mail_verify($email ,$code ,$verification_code){
+      Mail::raw('Welcome To Eventakom  ..Please verify your Email by visiting this link: http://eventakom.com/api/verify_email?email='.$email.'&email_verification_code='.$verification_code, function($msg) use($email){
+          $msg->to([$email])->subject('Eventakom');
+          $msg->from(['pentavalue.eventakom@gmail.com']);
+          // dd( $msg->getSwiftMessage()); 
+        });
+  }
+
+
+   public static function mail_verify_withview($view,$email ,$email_verification_code){
+     Mail::send($view, ['email' => $email, 'email_verification_code'=>$email_verification_code ], function($msg) use($email){
+          $msg->to([$email])->subject('Eventakom');
+          $msg->from(['pentavalue.eventakom@gmail.com']);
+      });
+
+  }
+
+  public static function isValidTimestamp($timestamp)
+  {
+     return ((string) (int) $timestamp === $timestamp)
+         && ($timestamp <= PHP_INT_MAX)
+         && ($timestamp >= ~PHP_INT_MAX);
+  }
+
+  /**
+   * use this function in order to remove al hamazat and al tashkeel to
+   * perform search more accurate in arabic search
+   * @param $text
+   * @return mixed
+   */
+  public static function CleanText($text){
+      $arr = ['أ' => 'ا',
+          'إ' => 'ا',
+          'آ' => 'ا',
+          "ة" => 'ه',
+          "ّ" => '',
+          "َّ" => '',
+          "ُّ" => '',
+          "ٌّ" => '',
+          "ًّ" => '',
+          "ِّ" => '',
+          "ٍّ" => '',
+          "ْ" => '',
+          "َ" => '',
+          "ً" => '',
+          "ُ" => '',
+          "ِ" => '',
+          "ٍ" => '',
+          "ٰ" => '',
+          "ٌ" => '',
+          "ۖ" => '',
+          "ۗ" => '',
+          "ـ" => ''
+      ];
+      foreach ($arr as $key => $val) {
+          $cleaned_text = str_replace($key, $val, $text);
+          $text = $cleaned_text;
+      }
+      return $text;
+  }
+
+    public static function CleanStriptagText($text){
+              $text = html_entity_decode($text);
+              $text = strip_tags($text);
+              $text = str_replace('&nbsp;', '', $text);
+              $text = trim(preg_replace('/\s+/', ' ', $text));
+              $text = Helpers::CleanText($text);
+              return $text;
+    }
+
     
 }
