@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Auth\Authenticatable;
 use Laravel\Lumen\Auth\Authorizable;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +10,7 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
-    use Authenticatable, Authorizable;
+    use HasApiTokens,Authenticatable, Authorizable;
 
     /**
      * The attributes that are mass assignable.
@@ -34,7 +34,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'password',
     ];
 
-    public static $rules = [ 'first_name' => 'between:1,12',
+    public static $rules = 
+    [ 
+    'first_name' => 'between:1,100',
     'last_name' => 'between:1,12',
     'email' => 'email|unique:users|max:35',
     // 'city_id' => 'required',
@@ -42,12 +44,24 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     'tele_code'=>'required',
     'password' => 'required|between:8,20',
     'mobile_os' => 'in:android,ios',
-    'lang_id' => 'in:1,2'];
+    'lang_id' => 'in:1,2',
+    'country_id'=>'required',
+    'city_id'=>'required',
+    'gender_id'=>'required'
+    ];
 
         // Relationships
     public function rules()
     {
     return $this->belongsToMany('App\Rule', 'user_rules', 'user_id', 'rule_id');
+    }
+    public function user_info()
+    {
+        return $this->hasOne('App\userInfo','user_id');
+    }
+    public function user_going()
+    {
+        return $this->hasMany('App\userGoing','user_id');
     }
     
     public function getPhotoAttribute($value)

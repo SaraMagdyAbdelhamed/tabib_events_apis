@@ -23,9 +23,9 @@ $app = new Laravel\Lumen\Application(
     realpath(__DIR__.'/../')
 );
 
-// $app->withFacades();
+ $app->withFacades();
 
-// $app->withEloquent();
+ $app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
@@ -59,13 +59,14 @@ $app->singleton(
 |
 */
 
-// $app->middleware([
-//    App\Http\Middleware\ExampleMiddleware::class
-// ]);
+$app->middleware([
+   App\Http\Middleware\ExampleMiddleware::class
+]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware([
+    'auth' => App\Http\Middleware\Authenticate::class,
+    'EventakomAuth' => App\Http\Middleware\EventakomAuth::class
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -78,10 +79,25 @@ $app->singleton(
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
+$app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
+$app->register(App\Providers\EventServiceProvider::class);
 
+// $app->register(\Nwidart\Modules\LumenModulesServiceProvider::class);
+$app->configure('modules');
+// Enable auth middleware (shipped with Lumen)
+// $app->middleware([
+//    App\Http\Middleware\EventakomAuth::class
+// ]);
+
+// ///service for sending email
+$app->register(\Illuminate\Mail\MailServiceProvider::class);
+
+
+$app->register(Laravel\Passport\PassportServiceProvider::class);
+$app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
+$app->configure('auth');
+$app->configure('app');
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes
@@ -99,4 +115,6 @@ $app->router->group([
     require __DIR__.'/../routes/web.php';
 });
 $app->register('Wn\Generators\CommandsServiceProvider');
+$app->configure('services');
+$app->configure('mail');
 return $app;
