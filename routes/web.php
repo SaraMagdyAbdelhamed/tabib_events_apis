@@ -36,7 +36,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 //    $router->post('sms','UsersController@sms');
 //    $router->post('all_interests','UsersController@all_interests');
 //    $router->post('all_currencies','EventsController@all_currencies');
-//    $router->post('all_genders','EventsController@all_genders');
+   $router->post('all_genders','GendersController@all_genders');
 //    $router->post('event_categories','EventsController@event_categories');
 //    $router->post('events[/{type}]',"EventsController@list_events");
 //    $router->post("big_events[/{type}]","EventsController@big_events");
@@ -63,14 +63,14 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 //   $router->post("famous_attractions_categories","FamousAttractionsController@famous_attractions_categories");
    $router->get('verify_email',  ['uses' => 'UsersController@verify_email','as'=>'verify']);
 //      //countries
-//   $router->get('all_countries',  ['uses' => 'GeoCountriesController@getAllCountries']);
-//    //cities
-//   $router->get('all_cities',  ['uses' => 'GeoCitiesController@getAllCities']);
-//   $router->get('getcitycountry',  ['uses' => 'GeoCitiesController@getcitycountry']);
-//   $router->get('searchcitycountry',  ['uses' => 'GeoCitiesController@searchcitycountry']);
+  $router->get('all_countries',  ['uses' => 'GeoCountriesController@getAllCountries']);
+   //cities
+  $router->get('all_cities',  ['uses' => 'GeoCitiesController@getAllCities']);
+  $router->get('getcitycountry',  ['uses' => 'GeoCitiesController@getcitycountry']);
+  $router->get('searchcitycountry',  ['uses' => 'GeoCitiesController@searchcitycountry']);
 //     //fixed pages
-//   $router->get('fixed_pages', ['uses' =>'UsersController@fixed_pages']);
-
+   $router->get('fixed_pages', ['uses' =>'FixedPagesController@fixed_pages']);
+   $router->get('getregioncity',  ['uses' => 'GeoRegionsController@getregioncity']);
 //   //data existence
   $router->post('mail_existence', ['uses' =>'UsersController@mail_existence']);
   $router->post('mobile_existence', ['uses' =>'UsersController@mobile_existence']);
@@ -84,6 +84,12 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
 //   //contat us
 //   $router->post("contact_us","UsersController@contact_us");
+
+$router->get('specialization', 'SpecializationsController@all');
+$router->get('specialization/{id}', 'SpecializationsController@get');
+$router->post('specialization', 'SpecializationsController@add');
+$router->put('specialization/{id}', 'SpecializationsController@put');
+$router->delete('specialization/{id}', 'SpecializationsController@remove');
 
 });
 
@@ -136,4 +142,54 @@ $router->group(['prefix' => 'api',  'middleware' => 'EventakomAuth'], function (
 
 });
 
+
+
+/**
+ * Routes for resource geo-city
+ */
+$router->get('geo-city', 'GeoCitiesController@all');
+$router->get('geo-city/{id}', 'GeoCitiesController@get');
+$router->post('geo-city', 'GeoCitiesController@add');
+$router->put('geo-city/{id}', 'GeoCitiesController@put');
+$router->delete('geo-city/{id}', 'GeoCitiesController@remove');
+
+/**
+ * Routes for resource geo-country
+ */
+$router->get('geo-country', 'GeoCountriesController@all');
+$router->get('geo-country/{id}', 'GeoCountriesController@get');
+$router->post('geo-country', 'GeoCountriesController@add');
+$router->put('geo-country/{id}', 'GeoCountriesController@put');
+$router->delete('geo-country/{id}', 'GeoCountriesController@remove');
+
+/**
+ * Routes for resource geo-region
+ */
+$router->get('geo-region', 'GeoRegionsController@all');
+$router->get('geo-region/{id}', 'GeoRegionsController@get');
+$router->post('geo-region', 'GeoRegionsController@add');
+$router->put('geo-region/{id}', 'GeoRegionsController@put');
+$router->delete('geo-region/{id}', 'GeoRegionsController@remove');
+
+/**
+ * Routes for resource gender
+ */
+$router->get('gender', 'GendersController@all');
+$router->get('gender/{id}', 'GendersController@get');
+$router->post('gender', 'GendersController@add');
+$router->put('gender/{id}', 'GendersController@put');
+$router->delete('gender/{id}', 'GendersController@remove');
+
+/**
+ * Routes for resource fixed-page
+ */
+$router->get('fixed-page', 'FixedPagesController@all');
+$router->get('fixed-page/{id}', 'FixedPagesController@get');
+$router->post('fixed-page', 'FixedPagesController@add');
+$router->put('fixed-page/{id}', 'FixedPagesController@put');
+$router->delete('fixed-page/{id}', 'FixedPagesController@remove');
+
+/**
+ * Routes for resource specialization
+ */
 

@@ -3,7 +3,7 @@
 //created_by: Ash
 
 namespace App\Libraries;
-use App\Entities;
+use App\Entity;
 use Illuminate\Support\Facades\Mail;
 
 class Helpers
@@ -36,24 +36,32 @@ class Helpers
       }
   }
 
-  public static function  localizations($table_name , $field , $item_id)
-    {
-      $value_localized = Entities::where('name',$table_name)->with([
-        'localizations' => function($query) use($field, $item_id)
-        {
-            $query->where('field', $field)->where('item_id', $item_id);
-        }
-      ])->get();
-      foreach ($value_localized as  $value) {
+//   public static function  localizations($table_name , $field , $item_id)
+//     {
+//       $value_localized = Entities::where('name',$table_name)->with([
+//         'localizations' => function($query) use($field, $item_id)
+//         {
+//             $query->where('field', $field)->where('item_id', $item_id);
+//         }
+//       ])->get();
+//       foreach ($value_localized as  $value) {
         
-        foreach ($value->localizations as $value1) {
-            return $value1->value;       
-        }
-      }
+//         foreach ($value->localizations as $value1) {
+//             return $value1->value;       
+//         }
+//       }
      
         
-    }
+//     }
+public static function localization($table_name, $field_name, $item_id, $lang_id) {
+    $localization = Entity::where('table_name', $table_name)->with(['localizations' => function($q) use ($field_name, $item_id, $lang_id){
+        $q->where('field', $field_name)->where('item_id', $item_id)->where('lang_id', $lang_id); }
+    ])->first();
 
+
+    $result = isset($localization->localizations[0]) ? $localization->localizations[0]->value : "Error";
+    return $result;
+}
 
        public static function mail($email ,$code ,$verification_code){
         Mail::raw('Welcome To avocatoapp   Your code is ('.$code.' ) And Your Verification code is ('.$verification_code.')', function($msg) use($email){ 

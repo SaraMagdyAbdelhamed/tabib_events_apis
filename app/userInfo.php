@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 class userInfo extends Model {
 
     protected $table='users_info';
-    protected $fillable = ['user_id','mobile2','mobile3','region_id','address','is_backend','is_profile_completed'];
+    protected $fillable = ['user_id','mobile2','mobile3','region_id','address','is_backend','is_profile_completed','specialization_id'];
 
 
     protected $dates = [];

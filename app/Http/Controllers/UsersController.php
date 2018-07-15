@@ -142,7 +142,13 @@ class UsersController extends Controller {
 
     public function edit_profile(Request $request)
     {
+        $twilio_config = [
+            'app_id' => 'AC3adf7af798b1515700c517b58bdfc56b',
+            'token' => '7f31eeed993ba1f5d62fd7ef2a3b1354',
+            'from' => '+16039452091'
+        ];
 
+        $twilio = new TwilioSmsService($twilio_config);
 
         $api_token = $request->header('access-token');
         //dd($api_token);
@@ -163,16 +169,20 @@ class UsersController extends Controller {
         
         $validator = Validator::make($request,
             [
-                'first_name' => 'required|between:1,12',
-                'last_name' => 'required|between:1,12',
+                'first_name' => 'between:1,100',
+                'last_name' => 'between:1,12',
                 'email' => $email_valid,
-                // 'conutry_code_id' => 'required',
-                // 'mobile' => 'required|numeric|unique:users',
-                //'password' => 'required|between:8,20',
-                // 'photo' => 'image|max:1024',
-                //'device_token' => 'required',
+                 'region_id' => 'required',
+                'mobile' => 'required|numeric|unique:users',
+                'tele_code'=>'required',
+                // 'password' => 'required|between:8,20',
                 'mobile_os' => 'in:android,ios',
-                'lang_id' => 'in:1,2'
+                'lang_id' => 'in:1,2',
+                // 'country_id'=>'required',
+                'city_id'=>'required',
+                'gender_id'=>'required',
+                'specialization_id'=>'required',
+                'address'=>'required'
 
             ]);
         if ($validator->fails()) {
@@ -190,10 +200,10 @@ class UsersController extends Controller {
 
         //     $input['password'] = Hash::make($input['password']);
         // }
-        $input['password'] = $user->password;
+        // $input['password'] = $user->password;
         //$input['is_active'] = 0;
         $input['username'] = $request['first_name'] . '' . $request['last_name'];
-        $input['mobile'] = $user->mobile;
+        $input['mobile'] =  $request['mobile'];
         $city_id=$request['city_id'];
         $city = GeoCity::find($city_id);
         $input['country_id'] = $city->geo_country->id;
@@ -201,6 +211,11 @@ class UsersController extends Controller {
         $input['longitude'] = $city->longitude;
         $input['latitude'] = $city->latitude;
         //$input['code']=mt_rand(100000, 999999);
+        $input['mobile_verification_code'] = str_random(4);
+        // $input['is_mobile_verification_code_expired'] = 0;
+        // $input['email_verification_code'] = str_random(4);
+        // $input['is_email_verified'] = 0;
+        $input['is_mobile_verified'] = 0;
         $input['email_verification_code'] = str_random(4); //change it to email_verification_code
         //$input['is_mobile_verification_code_expired']=0;
         $old_email = $user->email;
@@ -213,6 +228,23 @@ class UsersController extends Controller {
          $user_array = User:: where("api_token", "=", $api_token)->first();
         // $base_url = 'http://eventakom.com/eventakom_dev/public/';
         // $user_array->photo = $base_url.$user_array->photo;
+        $user_array->user_info()->update([
+            'address'=>$request['address'],
+            'specialization_id'=>$request['specialization_id'],
+            'is_profile_completed'=>1,
+            'region_id'=>$request['region_id']
+        ]);
+        if ($user_array) {
+            $sms_mobile = $request['tele_code'] . '' . $request['mobile'];
+            $sms_body = trans('messages.your_verification_code_is') . $input['mobile_verification_code'];
+            $status = $twilio->send($sms_mobile, $sms_body);
+            //process rules
+            $rules = userRules::create(['user_id'=>$user_array->id ,'rule_id'=>2 ]);
+            $mail_mobile_code=Helpers::mail($request['email'],$input['username'],$input['mobile_verification_code']);
+            $mail=Helpers::mail_verify_withview('emails.verifications',$request['email'],$input['email_verification_code']);
+            //dd($mail);
+
+        }
         return Helpers::Get_Response(200, 'success', '', $validator->errors(), array($user_array));
     }
 

@@ -12,6 +12,12 @@ class FixedPage extends Model {
         // Validation rules
     ];
 
+    protected $hidden = [];
+    // Relationships
+    public function updated_by()
+    {
+        return $this->belongsTo("App\User","updated_by"); 
+    }
     // Relationships
 
 }
