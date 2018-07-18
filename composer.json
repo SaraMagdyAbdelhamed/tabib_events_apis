@@ -18,7 +18,8 @@
         "monolog/monolog": "^1.23",
         "phanan/cascading-config": "~2.0",
         "twilio/sdk": "^5.16",
-        "wn/lumen-generators": "^1.3"
+        "wn/lumen-generators": "^1.3",
+        "kreait/firebase-php": "^4.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

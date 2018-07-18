@@ -114,6 +114,10 @@ $router->get('increment_views/{id}', 'OffersController@increment_views');
 $router->get('offers_sponsors/{sponsor_id}', 'OffersController@offers_sponsors');
 $router->post('rate_offer', 'OffersController@rate_offer');
 
+
+///add_survey
+$router->post('survey', 'SurveysController@index');
+
 });
 
 
@@ -220,3 +224,12 @@ $router->delete('fixed-page/{id}', 'FixedPagesController@remove');
 
 
 
+
+/**
+ * Routes for resource survey
+ */
+// $app->get('survey', 'SurveysController@all');
+// $app->get('survey/{id}', 'SurveysController@get');
+// $app->post('survey', 'SurveysController@add');
+// $app->put('survey/{id}', 'SurveysController@put');
+// $app->delete('survey/{id}', 'SurveysController@remove');
