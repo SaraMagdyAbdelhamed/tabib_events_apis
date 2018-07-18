@@ -36,7 +36,7 @@ class Offer extends Model {
         return ($result=='Error')? $value : $result;
     }
 
-        public function getImageAttribute($value){
+    public function getImageAttribute($value){
         
             $base_url = 'http://eventakom.com/eventakom_dev/public/';
             $photo =($value =='' || is_null($value)) ? '':$base_url.$value;
