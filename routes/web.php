@@ -32,6 +32,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
    $router->post('verify_verification_code', ['uses' =>'UsersController@verify_verification_code']);
    $router->post('resend_verification_code', ['uses' =>'UsersController@resend_verification_code']);
    $router->post('forget_password', ['uses' =>'UsersController@forget_password']);
+   $router->get('users_sponsors/{sponsor_id}', 'UsersController@users_sponsors');
 //    $router->post('social_login','UsersController@social_login');
 //    $router->post('sms','UsersController@sms');
 //    $router->post('all_interests','UsersController@all_interests');
@@ -110,6 +111,8 @@ $router->put('offer/{id}', 'OffersController@put');
 $router->delete('offer/{id}', 'OffersController@remove');
 $router->get('increment_calls/{id}', 'OffersController@increment_calls');
 $router->get('increment_views/{id}', 'OffersController@increment_views');
+$router->get('offers_sponsors/{sponsor_id}', 'OffersController@offers_sponsors');
+$router->post('rate_offer', 'OffersController@rate_offer');
 
 });
 

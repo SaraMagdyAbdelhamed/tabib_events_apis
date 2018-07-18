@@ -765,4 +765,12 @@ class UsersController extends Controller {
         return Helpers::Get_Response(200, 'success', '', $validator->errors(),array($user_array));
 
     }
+
+    public function users_sponsors($sponsor_id)
+    {
+      $Users = User::whereHas('sponsors_categories',function($q)use($sponsor_id){
+          $q->where('sponsor_category_id',$sponsor_id);
+      })->with('sponsors_categories')->get();  
+      return Helpers::Get_Response(200,'success','',[],$Users);
+    }
 }
