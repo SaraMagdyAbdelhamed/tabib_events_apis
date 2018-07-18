@@ -39,8 +39,19 @@ class Offer extends Model {
         public function getImageAttribute($value){
         
             $base_url = 'http://eventakom.com/eventakom_dev/public/';
-            $photo = $base_url.$value;
+            $photo =($value =='' || is_null($value)) ? '':$base_url.$value;
             return $photo;
     }
 
+
+    //Relations
+    public function categories()
+    {
+    return $this->belongsToMany('App\OfferCategory', 'offer_offer_categories', 'offer_id', 'offer_category_id');
+    }
+
+    public function requests()
+    {
+    return $this->hasMany('App\OfferRequest','offer_id');
+    }
 }

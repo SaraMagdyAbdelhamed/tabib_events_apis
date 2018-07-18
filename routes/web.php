@@ -91,6 +91,26 @@ $router->post('specialization', 'SpecializationsController@add');
 $router->put('specialization/{id}', 'SpecializationsController@put');
 $router->delete('specialization/{id}', 'SpecializationsController@remove');
 
+/**
+ * Routes for resource sponsor-category
+ */
+$router->get('sponsor_category', 'SponsorCategoriesController@all');
+$router->get('sponsor_category/{id}', 'SponsorCategoriesController@get');
+$router->post('sponsor_category', 'SponsorCategoriesController@add');
+$router->put('sponsor_category/{id}', 'SponsorCategoriesController@put');
+$router->delete('sponsor_category/{id}', 'SponsorCategoriesController@remove');
+
+/**
+ * Routes for resource offer
+ */
+$router->get('offers', 'OffersController@all');
+$router->get('offer/{id}', 'OffersController@get');
+$router->post('offer', 'OffersController@add');
+$router->put('offer/{id}', 'OffersController@put');
+$router->delete('offer/{id}', 'OffersController@remove');
+$router->get('increment_calls/{id}', 'OffersController@increment_calls');
+$router->get('increment_views/{id}', 'OffersController@increment_views');
+
 });
 
 
@@ -192,4 +212,8 @@ $router->delete('fixed-page/{id}', 'FixedPagesController@remove');
 /**
  * Routes for resource specialization
  */
+
+
+
+
 

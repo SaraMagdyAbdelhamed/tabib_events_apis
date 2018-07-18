@@ -56,6 +56,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
     return $this->belongsToMany('App\Rule', 'user_rules', 'user_id', 'rule_id');
     }
+    public function sponsors_categories()
+    {
+    return $this->belongsToMany('App\SponsorCategory', 'user_sponsor_categories', 'user_id', 'sponsor_category_id');
+    }
+    public function offers_requests()
+    {
+    return $this->hasMany('App\OfferRequest','user_id');
+    }
     public function user_info()
     {
         return $this->hasOne('App\userInfo','user_id');
