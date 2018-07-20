@@ -43,6 +43,11 @@ class Event extends Model {
     public function tickets(){
         return $this->hasMany('App\EventTicket','event_id');
     }
+
+    public function EventCategory()
+    {
+        return $this->belongsToMany('App\Category','event_categories','event_id','category_id');
+    }
     /** End Relations Section */
 
     /**  Localizations Through accessors */
@@ -82,7 +87,7 @@ class Event extends Model {
     public  static function EventsInCategories($categories_ids){
         return static::query()
             ->leftJoin('event_categories','events.id','=','event_categories.event_id')
-            ->whereIn('event_categories.interest_id',$categories_ids)
+            ->whereIn('event_categories.category_id',$categories_ids)
             ->select('events.*')
             ->distinct()
             ->with('categories')

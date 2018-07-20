@@ -13,5 +13,9 @@ class Category extends Model {
     ];
 
     // Relationships
+    public function events()
+    {
+        return $this->belongsToMany('App\Event','event_categories');
+    }
 
 }

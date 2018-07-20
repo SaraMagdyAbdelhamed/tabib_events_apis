@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use \Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\DB;
+use App\Category;
 
 class EventsController extends Controller {
 
@@ -37,9 +38,8 @@ class EventsController extends Controller {
             return Helpers::Get_Response(403, 'error', trans('validation.required'), $validator->errors(), []);
         }
         //$user = User::where('api_token',$request->header('access-token'))->first()->id;
-        $event = Event::query()
-            ->where('id',$request_data['event_id'])
-            ->with('prices.currency','categories','hash_tags','media','posts.replies')
+        $event = Event::where('id',$request_data['event_id'])
+            ->with('EventCategory','media')
             ->withCount('GoingUsers')
             ->get();
 
@@ -47,17 +47,17 @@ class EventsController extends Controller {
         if($event->isEmpty()){
             return Helpers::Get_Response(403, 'error', 'not found', [], []);
         }
-        $category_ids = Event::find($request_data['event_id'])->categories->pluck('pivot.interest_id');
-        $random = array_key_exists('random_limit',$request_data) ? $request_data['random_limit'] :10;
-        $count = Event::EventsInCategories($category_ids)->get()->count();
-        if($count < 10){
-            $result = Event::EventsInCategories($category_ids)->get()->random($count);
+        // $category_ids = Event::find($request_data['event_id'])->EventCategory->pluck('pivot.category_id');
+        // $random = array_key_exists('random_limit',$request_data) ? $request_data['random_limit'] :10;
+        // $count = Event::EventsInCategories($category_ids)->get()->count();
+        // if($count < 10){
+        //     $result = Event::EventsInCategories($category_ids)->get()->random($count);
 
-        }else{
-            $result = Event::EventsInCategories($category_ids)->get()->random($random);
+        // }else{
+        //     $result = Event::EventsInCategories($category_ids)->get()->random($random);
 
-        }
-        return Helpers::Get_Response(200, 'success', '', [], [['event'=>$event,'you_may_also_like'=>$result]]);
+        // }
+        return Helpers::Get_Response(200, 'success', '', [], [['event'=>$event]]);
 
     }
     public function list_events(Request $request,$type=NULL){
@@ -69,16 +69,16 @@ class EventsController extends Controller {
         //Validate
         $validator = Validator::make($request_data,
             [
-                "interest_id" => "required"
+                "category_id" => "required"
                
             ]);
         if ($validator->fails()) {
             return Helpers::Get_Response(403, 'error', trans('validation.required'), $validator->errors(), []);
         }
 
-        $interest = Interest::find($request_data['interest_id']);
-        if(!$interest){
-            return Helpers::Get_Response(403, 'error', trans('messages.interest_not_found'),[], []);
+        $category = Category::find($request_data['category_id']);
+        if(!$category){
+            return Helpers::Get_Response(403, 'error', trans('messages.category_not_found'),[], []);
         }
         if($request->header('access-token')){
             $user = User::where('api_token','=',$request->header('access-token'))->first();
@@ -89,12 +89,12 @@ class EventsController extends Controller {
             }
             // we want to get all events
             // related to this category - created by the login user
-            $users_events = $interest->events()
-                ->with('prices.currency','categories','hash_tags','media')
+            $users_events = $category->events()
+                ->with('EventCategory','media')
                 ->CreatedByUser($user)
                 ->ShowInMobile();
-            $non_users_events = $interest->events()
-                ->with('prices.currency','categories','hash_tags','media')
+            $non_users_events = $category->events()
+                ->with('EventCategory','media')
                 ->NotCreatedByUser($user)
                 ->ShowInMobile();
             // $data = $interest->events()
@@ -119,10 +119,10 @@ class EventsController extends Controller {
             $limit = array_key_exists('limit',$request_data) ? $request_data['limit']:10;
             $result = array_merge($users_data->WithPaginate($page,$limit)->get()->toArray(),$not_user_data->WithPaginate($page,$limit)->get()->toArray());
         }else{
-            $events = $interest->events()
-                ->with('prices.currency','categories','hash_tags','media')
-                ->IsActive()
-                ->ShowInMobile();
+            $events = $category->events()
+            ->with('EventCategory','media')
+            ->IsActive()
+            ->ShowInMobile();
             switch ($type) {
                 case 'upcoming':
                     $data = $events->UpcomingEvents();
@@ -257,7 +257,7 @@ class EventsController extends Controller {
         }
             //this Month Events
             $this_month_by_user = Event::query()
-                ->with('prices.currency','categories','hash_tags','media')
+                ->with('EventCategory','media')
                 ->CreatedByUser($user)
                 ->ShowInMobile()
                 ->ThisMonthEvents()
@@ -265,7 +265,7 @@ class EventsController extends Controller {
                 ->orderBy('end_datetime','DESC')
                 ->get();
             $this_month_not_by_user = Event::query()
-                ->with('prices.currency','categories','hash_tags','media')
+                ->with('EventCategory','media')
                 ->NotCreatedByUser($user)
                 ->ShowInMobile()
                 ->ThisMonthEvents()
@@ -276,7 +276,7 @@ class EventsController extends Controller {
 
             //Next Events
             $next_month_by_user = Event::query()
-                ->with('prices.currency','categories','hash_tags','media')
+                ->with('EventCategory','media')
                 ->CreatedByUser($user)
                 ->ShowInMobile()
                 ->NextMonthEvents()
@@ -284,7 +284,7 @@ class EventsController extends Controller {
                 ->orderBy('end_datetime','DESC')
                 ->get();
             $next_month_not_by_user = Event::query()
-                    ->with('prices.currency','categories','hash_tags','media')
+                    ->with('EventCategory','media')
                     ->NotCreatedByUser($user)
                     ->ShowInMobile()
                     ->NextMonthEvents()
@@ -293,7 +293,7 @@ class EventsController extends Controller {
                     ->get();
             $next_month = array_merge($next_month_by_user->toArray(),$next_month_not_by_user->toArray());
             $start_to_today_by_user = Event::query()
-                ->with('prices.currency','categories','hash_tags','media')
+                ->with('EventCategory','media')
                 ->CreatedByUser($user)
                 ->ShowInMobile()
                 ->StartOfMothEvents()
@@ -301,7 +301,7 @@ class EventsController extends Controller {
                 ->orderBy('end_datetime','DESC')
                 ->get();
             $start_to_today_not_by_user = Event::query()
-                ->with('prices.currency','categories','hash_tags','media')
+                ->with('EventCategory','media')
                 ->NotCreatedByUser($user)
                 ->ShowInMobile()
                 ->StartOfMothEvents()
@@ -322,7 +322,7 @@ class EventsController extends Controller {
 
         }else{
             $this_month = Event::query()
-                ->with('prices.currency','categories','hash_tags','media')
+                ->with('EventCategory','media')
                 ->IsActive()
                 ->ShowInMobile()
                 ->ThisMonthEvents()
@@ -330,7 +330,7 @@ class EventsController extends Controller {
                 ->orderBy('end_datetime','DESC')
                 ->get();
             $next_month = Event::query()
-                ->with('prices.currency','categories','hash_tags','media')
+                ->with('EventCategory','media')
                 ->IsActive()
                 ->ShowInMobile()
                 ->NextMonthEvents()
@@ -338,7 +338,7 @@ class EventsController extends Controller {
                 ->orderBy('end_datetime','DESC')
                 ->get();
             $start_to_today = Event::query()
-                ->with('prices.currency','categories','hash_tags','media')
+                ->with('EventCategory','media')
                 ->IsActive()
                 ->ShowInMobile()
                 ->StartOfMothEvents()
@@ -431,7 +431,7 @@ class EventsController extends Controller {
         if (array_key_exists('lang_id', $request_data)) {
             Helpers::Set_locale($request_data['lang_id']);
         }
-        $categories = Interest::query()->has('events')->get();
+        $categories = Event::with('EventCategory')->get();
         return Helpers::Get_Response(200,'success','',[],$categories);
     }
 
