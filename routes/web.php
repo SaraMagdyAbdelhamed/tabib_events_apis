@@ -38,13 +38,21 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 //    $router->post('all_interests','UsersController@all_interests');
 //    $router->post('all_currencies','EventsController@all_currencies');
    $router->post('all_genders','GendersController@all_genders');
-//    $router->post('event_categories','EventsController@event_categories');
-//    $router->post('events[/{type}]',"EventsController@list_events");
-//    $router->post("big_events[/{type}]","EventsController@big_events");
-//    $router->post('current_month_events',"EventsController@current_month_events");
-//    $router->post('nearby_events',          "EventsController@nearby_events");
+    $router->post('event_categories','EventsController@event_categories');
+    $router->post('events[/{type}]',"EventsController@list_events");
+    $router->post("big_events[/{type}]","EventsController@big_events");
+    $router->post('current_month_events',"EventsController@current_month_events");
+    $router->post('nearby_events',          "EventsController@nearby_events");
+    /**
+ * Routes for resource event
+ */
+    // $router->get('event', 'EventsController@all');
+    // $router->get('event/{id}', 'EventsController@get');
+    // $router->post('event', 'EventsController@add');
+    // $router->put('event/{id}', 'EventsController@put');
+    // $router->delete('event/{id}', 'EventsController@remove');
 //    $router->post("age_ranges","EventsController@age_ranges");
-//    $router->post('event_details',"EventsController@event_details");
+       $router->post('event_details',"EventsController@event_details");
 //    $router->post("event_posts","EventsController@event_posts");
 //    $router->post('recommended_events[/{type}]','EventsController@recommended_events');
 //    $router->post('trending_keywords',"EventsController@trending_keywords");
@@ -233,3 +241,5 @@ $router->delete('fixed-page/{id}', 'FixedPagesController@remove');
 // $app->post('survey', 'SurveysController@add');
 // $app->put('survey/{id}', 'SurveysController@put');
 // $app->delete('survey/{id}', 'SurveysController@remove');
+
+

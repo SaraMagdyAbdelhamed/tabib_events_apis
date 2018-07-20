@@ -6,7 +6,7 @@ class OfferRequest extends Model {
 
     protected $table='offer_requests';
 	
-    protected $fillable = ['user_id','offer_id','is_accepted'];
+    protected $fillable = ['user_id','offer_id','is_accepted','is_accepted_update'];
 
     protected $dates = [];
 
