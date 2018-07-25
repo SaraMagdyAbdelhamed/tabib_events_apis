@@ -1,7 +1,9 @@
 <?php namespace App\Http\Controllers;
     use App\Offer;
     use Illuminate\Http\Request;
-use App\Libraries\Helpers;
+    use App\Libraries\Helpers;
+    use App\User;
+    use App\OfferRequest;
 class OffersController extends Controller {
 
     const MODEL = "App\Offer";
@@ -36,5 +38,16 @@ class OffersController extends Controller {
         $offer->rating_avg=$offer->total_number_of_ratings/$offer->total_sum_ratings;
         $offer->save();
         return Helpers::Get_Response(200,'success','',[],$offer);
+    }
+
+    public function request_offer(Request $request)
+    {
+      $user = User::where('api_token','=',$request->header('access-token'))->first();
+      $request=OfferRequest::create([
+        'user_id'=>$user->id,
+        'offer_id'=>$request->offer_id
+      ]);
+
+      return Helpers::Get_Response(200,'success','',[],$request);
     }
 }

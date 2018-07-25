@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use \Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\DB;
 use App\Category;
+use App\EventJoinRequest;
 
 class EventsController extends Controller {
 
@@ -433,6 +434,17 @@ class EventsController extends Controller {
         }
         $categories = Event::with('EventCategory')->get();
         return Helpers::Get_Response(200,'success','',[],$categories);
+    }
+
+    public function request_event(Request $request)
+    {
+      $user = User::where('api_token','=',$request->header('access-token'))->first();
+      $request=EventJoinRequest::create([
+        'user_id'=>$user->id,
+        'event_id'=>$request->event_id
+      ]);
+
+      return Helpers::Get_Response(200,'success','',[],$request);
     }
 
 }

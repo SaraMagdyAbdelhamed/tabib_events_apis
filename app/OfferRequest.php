@@ -13,7 +13,7 @@ class OfferRequest extends Model {
     public static $rules = [
         // Validation rules
     ];
-    public $timestamps = true;
+    public $timestamps = false;
 
     // Relationships
     
