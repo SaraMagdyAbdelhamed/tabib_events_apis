@@ -125,6 +125,7 @@ $router->post('rate_offer', 'OffersController@rate_offer');
 
 ///add_survey
 $router->post('survey', 'SurveysController@index');
+$router->post('survey_answer','SurveysController@add');
 
 });
 

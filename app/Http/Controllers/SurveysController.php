@@ -3,6 +3,7 @@
     use Kreait\Firebase;
     use Kreait\Firebase\Factory;
     use Kreait\Firebase\ServiceAccount;
+    use App\Libraries\Helpers;
 class SurveysController extends Controller {
 
     // const MODEL = "App\Survey";
@@ -10,8 +11,9 @@ class SurveysController extends Controller {
     // use RESTActions;
    
 
-    public function index()
+    public function index(Request $request)
     {
+        $request = (array)json_decode($request->getContent(), true);
         if (!function_exists('public_path')) {
             /**
              * Return the path to public dir
@@ -25,22 +27,29 @@ class SurveysController extends Controller {
                 return rtrim(app()->basePath('public/' . $path), '/');
             }
         }
-        $serviceAccount = ServiceAccount::fromJsonFile(public_path().'/doctors-events-3b5e51a68748.json');
-        $firebase = (new Factory)
-        ->withServiceAccount($serviceAccount)
-        ->withDatabaseUri('https://doctors-events.firebaseio.com/')
-        ->create();
+        $serviceAccount = ServiceAccount::fromJsonFile(public_path().'/tabibevent-b5519e3c0e09.json');
+                            $firebase = (new Factory)
+                            ->withServiceAccount($serviceAccount)
+                            ->withDatabaseUri('https://tabibevent.firebaseio.com/')
+                            ->create();
 
         $database = $firebase->getDatabase();
 
         $newPost = $database
         ->getReference('surveys')
-        ->push([
-        'title' => 'survey' ,
-        'category' => 'Laravel'
-        ]);
+        ->getvalue();
+
+        $surveys=[];
+        foreach($newPost as $survey)
+        {
+            if($survey['parent_id'] ==  $request['event_id'])
+            {
+                $surveys[]=$survey;
+            }
+           
+        }
         // echo '<pre>';
-        dd($newPost->getvalue());
+        return Helpers::Get_Response(200,'success','',[],$surveys);
     }
 
 }
