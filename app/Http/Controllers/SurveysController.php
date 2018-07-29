@@ -9,11 +9,8 @@ class SurveysController extends Controller {
     // const MODEL = "App\Survey";
 
     // use RESTActions;
-   
-
-    public function index(Request $request)
+    public function firebase_database()
     {
-        $request = (array)json_decode($request->getContent(), true);
         if (!function_exists('public_path')) {
             /**
              * Return the path to public dir
@@ -34,7 +31,14 @@ class SurveysController extends Controller {
                             ->create();
 
         $database = $firebase->getDatabase();
+        return $database;
+    }
 
+    public function index(Request $request)
+    {
+        $request = (array)json_decode($request->getContent(), true);
+        
+        $database=self::firebase_database();
         $newPost = $database
         ->getReference('surveys')
         ->getvalue();
@@ -48,8 +52,24 @@ class SurveysController extends Controller {
             }
            
         }
+        //  return ($surveys[0]);
         // echo '<pre>';
         return Helpers::Get_Response(200,'success','',[],$surveys);
     }
+
+    public function add(Request $request)
+    {
+        $request = (array)json_decode($request->getContent(), true);
+        
+        $database=self::firebase_database();
+
+        $updates=['surveys/'.$request['survey_id'].'/questions'.$request['question_id'].'/answers'.$request['answer_id']];
+              $data=$database->getReference('surveys/'.$request['survey_id'])
+                    ->getvalue();
+
+      return Helpers::Get_Response(200,'success','',[],$data);
+    }
+
+
 
 }
