@@ -63,11 +63,35 @@ class SurveysController extends Controller {
         
         $database=self::firebase_database();
 
-        $updates=['surveys/'.$request['survey_id'].'/questions'.$request['question_id'].'/answers'.$request['answer_id']];
+        // $updates=['surveys/'.$request['survey_id'].'/questions'.$request['question_id'].'/answers'.$request['answer_id']];
               $data=$database->getReference('surveys/'.$request['survey_id'])
                     ->getvalue();
+        $questions=[];
+     foreach($data['questions'] as $key => $question)
+     {
+        if($question['id'] == $request['question_id'])
+        {
+            foreach($question['answers'] as $key1 => $answer )
+            {
+                if($answer['id'] == $request['answer_id'])
+                {
+                    $question['answers'][$key1]['number_of_selections']=$answer['number_of_selections']+1;
+                    //  dd($answer);
+                }
+                // dd($answer);
+            }
+            // dd($question);
+        }
+        $questions[$key]=$question;
+     }
+     $updates=['surveys/'.$request['survey_id'].'/questions'=>$questions];
+              $data2=$database->getReference()
+                    ->update($updates);
+     $data1=$database->getReference('surveys/'.$data['id'])
+                    ->getvalue();
+    //  dd($questions);
 
-      return Helpers::Get_Response(200,'success','',[],$data);
+      return Helpers::Get_Response(200,'success','',[],$data1);
     }
 
 
