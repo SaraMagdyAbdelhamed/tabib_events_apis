@@ -125,13 +125,15 @@ $router->post('rate_offer', 'OffersController@rate_offer');
 
 ///add_survey
 $router->post('survey', 'SurveysController@index');
-$router->post('survey_answer','SurveysController@add');
+
 
 });
 
 
 $router->group(['prefix' => 'api',  'middleware' => 'EventakomAuth'], function () use ($router) {
 
+  //survey
+  $router->post('survey_answer','SurveysController@add');
     //users routes
   $router->post('logout', 'UsersController@logout');
   $router->post('change_lang','UsersController@change_lang');
