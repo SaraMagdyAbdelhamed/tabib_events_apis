@@ -162,16 +162,20 @@ class UsersController extends Controller {
 
         $user = User:: where("api_token", "=", $api_token)->first();
     // dd($request);
+    if(array_key_exists('email', $request)){
         if ($user->email == $request['email']) {
             $email_valid = 'email|max:35';
         } else {
             $email_valid = 'email|unique:users|max:35';
         }
+    }
+    if(array_key_exists('mobile', $request)){
         if ($user->mobile == $request['mobile']) {
-            $mobile_valid = 'numeric|max:11';
+            $mobile_valid = 'numeric|digits:11';
         } else {
-            $mobile_valid = 'numeric|unique:users|max:11';
+            $mobile_valid = 'numeric|unique:users|digits:11';
         }
+    }
         
         $validator = Validator::make($request,
             [
