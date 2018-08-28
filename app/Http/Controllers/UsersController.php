@@ -53,8 +53,8 @@ class UsersController extends Controller {
         $input['mobile_verification_code'] = str_random(4);
         $input['is_mobile_verification_code_expired'] = 0;
         $input['email_verification_code'] = str_random(4);
-        $input['is_email_verified'] = 0;
-        $input['is_mobile_verified'] = 0;
+        $input['is_email_verified'] = 1;
+        $input['is_mobile_verified'] = 1;
         if(isset($request['city_id'])){
         $city_id=$request['city_id'];
         $city = GeoCity::find($city_id);
@@ -88,8 +88,8 @@ class UsersController extends Controller {
             $status = $twilio->send($sms_mobile, $sms_body);
             //process rules
             $rules = userRules::create(['user_id'=>$user_array->id ,'rule_id'=>2 ]);
-            $mail_mobile_code=Helpers::mail($request['email'],$input['username'],$input['mobile_verification_code']);
-            $mail=Helpers::mail_verify_withview('emails.verifications',$request['email'],$input['email_verification_code']);
+            // $mail_mobile_code=Helpers::mail($request['email'],$input['username'],$input['mobile_verification_code']);
+            // $mail=Helpers::mail_verify_withview('emails.verifications',$request['email'],$input['email_verification_code']);
             //dd($mail);
 
         }
