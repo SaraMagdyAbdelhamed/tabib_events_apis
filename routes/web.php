@@ -104,6 +104,7 @@ $router->delete('specialization/{id}', 'SpecializationsController@remove');
  * Routes for resource sponsor-category
  */
 $router->get('sponsor_category', 'SponsorCategoriesController@all');
+$router->get('sponsor_category_sponsors/{cat_id}', 'SponsorCategoriesController@get_sponsors');
 $router->get('sponsor_category/{id}', 'SponsorCategoriesController@get');
 $router->post('sponsor_category', 'SponsorCategoriesController@add');
 $router->put('sponsor_category/{id}', 'SponsorCategoriesController@put');
