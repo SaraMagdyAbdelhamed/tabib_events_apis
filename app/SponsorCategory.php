@@ -24,9 +24,9 @@ class SponsorCategory extends Model {
   
 
     // Relationships
-    public function users()
+    public function sponsors()
     {
-        return $this->belongsToMany('App\User');
+        return $this->belongsToMany('App\User', 'user_sponsor_categories', 'sponsor_category_id', 'user_id');
     }
 
 }

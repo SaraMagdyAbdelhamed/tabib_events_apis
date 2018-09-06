@@ -4,6 +4,11 @@
     use Kreait\Firebase\Factory;
     use Kreait\Firebase\ServiceAccount;
     use App\Libraries\Helpers;
+    use App\Survey;
+    use App\SurveyQuestion;
+    use App\SurveyQuestionAnswer;
+    use App\SurveyAnswerUser;
+    use App\User;
 class SurveysController extends Controller {
 
     // const MODEL = "App\Survey";
@@ -59,6 +64,7 @@ class SurveysController extends Controller {
 
     public function add(Request $request)
     {
+        $api=$request->header('access-token');
         $request = (array)json_decode($request->getContent(), true);
         
         $database=self::firebase_database();
@@ -89,6 +95,18 @@ class SurveysController extends Controller {
                     ->update($updates);
      $data1=$database->getReference('surveys/'.$data['id'])
                     ->getvalue();
+
+    $survey=Survey::where('firebase_id',$request['survey_id'])->first();
+    $question=SurveyQuestion::where('survey_id',$survey->id)->where('firebase_id',$request['question_id'])->first();
+    $answer=SurveyQuestionAnswer::where('survey_id',$survey->id)->where('question_id',$question->id)->where('firebase_id',$request['answer_id'])->first();
+    $answer->update([
+        "number_of_selections"=>$answer->number_of_selections+1
+    ]);
+    $user=User::where('api_token',$api)->first();
+    SurveyAnswerUser::create([
+        "answer_id"=>$answer->id,
+        "user_id"=>$user->id
+    ]);
     //  dd($questions);
 
       return Helpers::Get_Response(200,'success','',[],$data1);

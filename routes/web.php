@@ -104,6 +104,7 @@ $router->delete('specialization/{id}', 'SpecializationsController@remove');
  * Routes for resource sponsor-category
  */
 $router->get('sponsor_category', 'SponsorCategoriesController@all');
+$router->get('sponsor_category_sponsors/{cat_id}', 'SponsorCategoriesController@get_sponsors');
 $router->get('sponsor_category/{id}', 'SponsorCategoriesController@get');
 $router->post('sponsor_category', 'SponsorCategoriesController@add');
 $router->put('sponsor_category/{id}', 'SponsorCategoriesController@put');
@@ -125,13 +126,15 @@ $router->post('rate_offer', 'OffersController@rate_offer');
 
 ///add_survey
 $router->post('survey', 'SurveysController@index');
-$router->post('survey_answer','SurveysController@add');
+
 
 });
 
 
 $router->group(['prefix' => 'api',  'middleware' => 'EventakomAuth'], function () use ($router) {
 
+  //survey
+  $router->post('survey_answer','SurveysController@add');
     //users routes
   $router->post('logout', 'UsersController@logout');
   $router->post('change_lang','UsersController@change_lang');

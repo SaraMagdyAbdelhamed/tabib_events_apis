@@ -53,8 +53,9 @@ class UsersController extends Controller {
         $input['mobile_verification_code'] = str_random(4);
         $input['is_mobile_verification_code_expired'] = 0;
         $input['email_verification_code'] = str_random(4);
-        $input['is_email_verified'] = 0;
-        $input['is_mobile_verified'] = 0;
+        $input['is_email_verified'] = 1;
+        $input['is_mobile_verified'] = 1;
+        // $input['is_profile_completed']=1;
         if(isset($request['city_id'])){
         $city_id=$request['city_id'];
         $city = GeoCity::find($city_id);
@@ -69,7 +70,7 @@ class UsersController extends Controller {
         $user_info->user_id=$user->id;
         $user_info->region_id=$request['region_id'];
         $user_info->is_backend=0;
-        $user_info->is_profile_completed=0;
+        $user_info->is_profile_completed=1;
         if(isset($request['mobile2']))
         {
             $user_info->mobile2=$request['mobile2']; 
@@ -88,8 +89,8 @@ class UsersController extends Controller {
             $status = $twilio->send($sms_mobile, $sms_body);
             //process rules
             $rules = userRules::create(['user_id'=>$user_array->id ,'rule_id'=>2 ]);
-            $mail_mobile_code=Helpers::mail($request['email'],$input['username'],$input['mobile_verification_code']);
-            $mail=Helpers::mail_verify_withview('emails.verifications',$request['email'],$input['email_verification_code']);
+            // $mail_mobile_code=Helpers::mail($request['email'],$input['username'],$input['mobile_verification_code']);
+            // $mail=Helpers::mail_verify_withview('emails.verifications',$request['email'],$input['email_verification_code']);
             //dd($mail);
 
         }
@@ -161,28 +162,32 @@ class UsersController extends Controller {
 
         $user = User:: where("api_token", "=", $api_token)->first();
     // dd($request);
+    if(array_key_exists('email', $request)){
         if ($user->email == $request['email']) {
-            $email_valid = 'required|email|max:35';
+            $email_valid = 'email|max:35';
         } else {
-            $email_valid = 'required|email|unique:users|max:35';
+            $email_valid = 'email|unique:users|max:35';
         }
+    }
+    if(array_key_exists('mobile', $request)){
+        if ($user->mobile == $request['mobile']) {
+            $mobile_valid = 'numeric|digits:11';
+        } else {
+            $mobile_valid = 'numeric|unique:users|digits:11';
+        }
+    }
         
         $validator = Validator::make($request,
             [
                 'first_name' => 'between:1,100',
-                'last_name' => 'between:1,12',
                 'email' => $email_valid,
-                 'region_id' => 'required',
-                'mobile' => 'required|numeric|unique:users',
-                'tele_code'=>'required',
+                //  'region_id' => 'required',
+                'mobile' => $mobile_valid,
                 // 'password' => 'required|between:8,20',
                 'mobile_os' => 'in:android,ios',
                 'lang_id' => 'in:1,2',
                 // 'country_id'=>'required',
-                'city_id'=>'required',
-                'gender_id'=>'required',
-                'specialization_id'=>'required',
-                'address'=>'required'
+                
 
             ]);
         if ($validator->fails()) {
@@ -202,7 +207,7 @@ class UsersController extends Controller {
         // }
         // $input['password'] = $user->password;
         //$input['is_active'] = 0;
-        $input['username'] = $request['first_name'] . '' . $request['last_name'];
+        $input['username'] = $request['first_name'];
         $input['mobile'] =  $request['mobile'];
         $city_id=$request['city_id'];
         $city = GeoCity::find($city_id);
@@ -215,33 +220,33 @@ class UsersController extends Controller {
         // $input['is_mobile_verification_code_expired'] = 0;
         // $input['email_verification_code'] = str_random(4);
         // $input['is_email_verified'] = 0;
-        $input['is_mobile_verified'] = 0;
+        // $input['is_mobile_verified'] = 1;
         $input['email_verification_code'] = str_random(4); //change it to email_verification_code
         //$input['is_mobile_verification_code_expired']=0;
         $old_email = $user->email;
         $user_update = $user->update($input);
-        if ($user_update && $old_email != $request['email']) {
-            //$status =$twilio->send($request['mobile'],$input['mobile_verification_code']);
-           $mail=Helpers::mail_verify($request['email'],$input['username'],$input['email_verification_code']);
-            $user->update(['is_email_verified' => 0]);
-        }
+        // if ($user_update && $old_email != $request['email']) {
+        //     //$status =$twilio->send($request['mobile'],$input['mobile_verification_code']);
+        //    $mail=Helpers::mail_verify($request['email'],$input['username'],$input['email_verification_code']);
+        //     $user->update(['is_email_verified' => 0]);
+        // }
          $user_array = User:: where("api_token", "=", $api_token)->first();
         // $base_url = 'http://eventakom.com/eventakom_dev/public/';
         // $user_array->photo = $base_url.$user_array->photo;
-        $user_array->user_info()->update([
-            'address'=>$request['address'],
-            'specialization_id'=>$request['specialization_id'],
-            'is_profile_completed'=>1,
-            'region_id'=>$request['region_id']
-        ]);
+        // $user_array->user_info()->update([
+        //     'address'=>$request['address'],
+        //     'specialization_id'=>$request['specialization_id'],
+        //     'is_profile_completed'=>1,
+        //     'region_id'=>$request['region_id']
+        // ]);
         if ($user_array) {
             $sms_mobile = $request['tele_code'] . '' . $request['mobile'];
             $sms_body = trans('messages.your_verification_code_is') . $input['mobile_verification_code'];
             $status = $twilio->send($sms_mobile, $sms_body);
             //process rules
             $rules = userRules::create(['user_id'=>$user_array->id ,'rule_id'=>2 ]);
-            $mail_mobile_code=Helpers::mail($request['email'],$input['username'],$input['mobile_verification_code']);
-            $mail=Helpers::mail_verify_withview('emails.verifications',$request['email'],$input['email_verification_code']);
+            // $mail_mobile_code=Helpers::mail($request['email'],$input['username'],$input['mobile_verification_code']);
+            // $mail=Helpers::mail_verify_withview('emails.verifications',$request['email'],$input['email_verification_code']);
             //dd($mail);
 
         }
@@ -364,7 +369,7 @@ class UsersController extends Controller {
             Helpers::Set_locale($request['lang_id']);
         }
         $validator = Validator::make($request, [
-            "mobile" => "required|numeric",
+            "MobileOrEmail" => "required",
             "tele_code"=>"required",
             "password" => "required|min:8|max:20",
 //            "device_token"=>'required',
@@ -374,19 +379,26 @@ class UsersController extends Controller {
         if ($validator->fails()) {
             return Helpers::Get_Response(403, 'error', '', $validator->errors(), []);
         }
-        if (array_key_exists('mobile', $request) && array_key_exists('password', $request)) {
+        if (array_key_exists('MobileOrEmail', $request) && array_key_exists('password', $request)) {
 
             //////
 
-            if (is_numeric($request['mobile'])) {
-        $user = User::where("mobile", "=", $request['mobile'])->where('tele_code', $request['tele_code'])->with('rules')->first();
+            // if (isset($request['MobileOrEmail'])) {
+        $user = User::where("mobile", "=", $request['MobileOrEmail'])->where('tele_code', $request['tele_code'])->with('rules')->first();
 
                 if (!$user) {
-                    return Helpers::Get_Response(400, 'error', trans('messages.mobile_isn’t_registered'), $validator->errors(), []);
+                    $user = User::where("email", "=", $request['MobileOrEmail'])->with('rules')->first();
+                    if(! $user)
+                    {
+                  return Helpers::Get_Response(400, 'error', trans('messages.mobile_or_email_isn’t_registered'), $validator->errors(), []);
+
+                    }
                 }
-            }else{
-                 return Helpers::Get_Response(400, 'error', trans('messages.invalid_mobile_number'), $validator->errors(), []);
-            }
+            // }else{
+            //      return Helpers::Get_Response(400, 'error', trans('messages.invalid_mobile_number_or_email'), $validator->errors(), []);
+            // }
+
+            
             // elseif (filter_var($request['mobile'], FILTER_VALIDATE_EMAIL)) {
             //   $user = User:: where("email", "=", $request['mobile'])->with('rules')->first();
             //   if(!$user) {
@@ -434,10 +446,10 @@ class UsersController extends Controller {
 //                            "lang_id"=>$request['lang_id']
 //                            "mobile_os"=>$request['mobile_os'],
 //                        ]);
-                      $user_array = User::where('mobile', $request['mobile'])->where('tele_code', $request['tele_code'])->first();
+                    //   $user_array = User::where('mobile', $request['mobile'])->where('tele_code', $request['tele_code'])->first();
                       // $base_url = 'http://eventakom.com/eventakom_dev/public/';
                       // $user_array->photo = $base_url.$user_array->photo;
-                        return Helpers::Get_Response(200, 'success', '', $validator->errors(), array($user_array));
+                        return Helpers::Get_Response(200, 'success', '', $validator->errors(), array($user));
                     } else {
                         return Helpers::Get_Response(400, 'error', trans('messages.active'), $validator->errors(), []);
                     }
