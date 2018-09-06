@@ -387,7 +387,7 @@ class UsersController extends Controller {
         $user = User::where("mobile", "=", $request['MobileOrEmail'])->where('tele_code', $request['tele_code'])->with('rules')->with('user_info')->first();
 
                 if (!$user) {
-                    $user = User::where("email", "=", $request['MobileOrEmail'])->with('rules')->first();
+                    $user = User::where("email", "=", $request['MobileOrEmail'])->with('rules')->with('user_info')->first();
                     if(! $user)
                     {
                   return Helpers::Get_Response(400, 'error', trans('messages.mobile_or_email_isn’t_registered'), $validator->errors(), []);
