@@ -48,7 +48,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     'lang_id' => 'in:1,2',
     'country_id'=>'required',
     'city_id'=>'required',
-    'gender_id'=>'required'
+    'gender_id'=>'required',
+    'region_id'=>'required'
     ];
 
         // Relationships
