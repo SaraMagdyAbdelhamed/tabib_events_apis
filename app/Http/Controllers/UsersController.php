@@ -384,7 +384,7 @@ class UsersController extends Controller {
             //////
 
             // if (isset($request['MobileOrEmail'])) {
-        $user = User::where("mobile", "=", $request['MobileOrEmail'])->where('tele_code', $request['tele_code'])->with('rules')->first();
+        $user = User::where("mobile", "=", $request['MobileOrEmail'])->where('tele_code', $request['tele_code'])->with('rules')->with('user_info')->first();
 
                 if (!$user) {
                     $user = User::where("email", "=", $request['MobileOrEmail'])->with('rules')->first();
