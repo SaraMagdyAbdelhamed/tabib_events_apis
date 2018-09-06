@@ -50,4 +50,10 @@ class OffersController extends Controller {
 
       return Helpers::Get_Response(200,'success','',[],$request);
     }
+
+    public function get_offer($id)
+    {
+      $offer = Offer::where('id',$id)->with('categories')->get();
+      return Helpers::Get_Response(200,'success','',[],$offer);
+    }
 }

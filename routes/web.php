@@ -114,7 +114,7 @@ $router->delete('sponsor_category/{id}', 'SponsorCategoriesController@remove');
  * Routes for resource offer
  */
 $router->get('offers', 'OffersController@all');
-$router->get('offer/{id}', 'OffersController@get');
+$router->get('offer/{id}', 'OffersController@get_offer');
 $router->post('offer', 'OffersController@add');
 $router->put('offer/{id}', 'OffersController@put');
 $router->delete('offer/{id}', 'OffersController@remove');
