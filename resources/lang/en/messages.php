@@ -42,7 +42,8 @@ return [
     'delete_event'=>'You have no access to delete this event',
     'use_ticketing_system' => 'Event doesn\'t use ticketing system',
     'is_paid' =>'This event is not paid',
-    'current_available_tickets' => 'No tickets availabe to be booked'
+	'current_available_tickets' => 'No tickets availabe to be booked',
+	'category_not_found'=>'This category not found',
 
 
 ];

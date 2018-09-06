@@ -58,7 +58,7 @@ class EventsController extends Controller {
         //     $result = Event::EventsInCategories($category_ids)->get()->random($random);
 
         // }
-        return Helpers::Get_Response(200, 'success', '', [], [['event'=>$event]]);
+        return Helpers::Get_Response(200, 'success', '', [], $event);
 
     }
     public function list_events(Request $request,$type=NULL){
@@ -347,12 +347,22 @@ class EventsController extends Controller {
                 ->orderBy('end_datetime','DESC')
                 ->get();
 
-            $result = [
-                'start_of_month_to_today'          => $start_to_today,
-                'start_of_today_to_end'            => $this_month,
-                'next_month'                       => $next_month
+            // $result = [
+            //     'start_of_month_to_today'          => $start_to_today,
+            //     'start_of_today_to_end'            => $this_month,
+            //     'next_month'                       => $next_month
 
-            ];
+            // ];
+            // $result = array_merge(array($start_to_today),array( $this_month));
+            $result=[];
+            foreach($start_to_today as $today)
+            {
+                $result[]=$today;
+            }
+            foreach($this_month as $today)
+            {
+                $result[]=$today;
+            }
             return Helpers::Get_Response(200,'success','',[],$result);
 
         }

@@ -41,7 +41,8 @@ return [
     'delete_event' => 'ليس لديك الصلاحية لحذف هذا الإيفنت.',
     'use_ticketing_system' =>'لا يستخدم نظام الحجز',
     'is_paid' =>'هذا الحدث لم يتم تأكيد دفعه',
-    'current_available_tickets'=>'لايوجد تذاكر متاحة للحجز'
+	'current_available_tickets'=>'لايوجد تذاكر متاحة للحجز',
+	'category_not_found'=>'هذا التصنيف غير موجود',
 
 
 
