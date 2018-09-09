@@ -8,9 +8,14 @@ class SponsorCategoriesController extends Controller {
 
     use RESTActions;
 
-    public function get_sponsors($sponsor_id)
+    public function get_sponsors($cat_id)
     {
-       return Helpers::Get_Response(200,'success','',[],SponsorCategory::where('id',$sponsor_id)->with('sponsors')->get());
+        if($cat_id == 0 )
+        {
+    return Helpers::Get_Response(200,'success','',[],SponsorCategory::with('sponsors')->get());
+
+        }
+       return Helpers::Get_Response(200,'success','',[],SponsorCategory::where('id',$cat_id)->with('sponsors')->get());
     }
 
 }
