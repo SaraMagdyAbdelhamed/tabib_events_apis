@@ -449,6 +449,14 @@ class EventsController extends Controller {
         $categories = Event::with('EventCategory')->get();
         return Helpers::Get_Response(200,'success','',[],$categories);
     }
+    public function  categories(Request $request){
+        $request_data = (array)json_decode($request->getContent(), true);
+        if (array_key_exists('lang_id', $request_data)) {
+            Helpers::Set_locale($request_data['lang_id']);
+        }
+        $categories = Category::all();
+        return Helpers::Get_Response(200,'success','',[],$categories);
+    }
 
     public function request_event(Request $request)
     {

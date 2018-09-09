@@ -39,6 +39,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 //    $router->post('all_currencies','EventsController@all_currencies');
    $router->post('all_genders','GendersController@all_genders');
     $router->post('event_categories','EventsController@event_categories');
+    $router->get('categories','EventsController@categories');
     $router->post('events[/{type}]',"EventsController@list_events");
     $router->post("big_events[/{type}]","EventsController@big_events");
     $router->post('current_month_events',"EventsController@current_month_events");
