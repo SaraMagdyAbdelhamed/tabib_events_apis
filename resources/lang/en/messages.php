@@ -44,6 +44,8 @@ return [
     'is_paid' =>'This event is not paid',
 	'current_available_tickets' => 'No tickets availabe to be booked',
 	'category_not_found'=>'This category not found',
+	'noevents'=>'No Events exist',
+	'noregions'=>'No Regions found'
 
 
 ];

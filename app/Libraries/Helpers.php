@@ -64,7 +64,7 @@ public static function localization($table_name, $field_name, $item_id, $lang_id
 }
 
        public static function mail($email ,$code ,$verification_code){
-        Mail::raw('Welcome To avocatoapp   Your code is ('.$code.' ) And Your Verification code is ('.$verification_code.')', function($msg) use($email){ 
+        Mail::raw('Welcome To Tabib Events   Your code is ('.$code.' ) And Your Verification code is ('.$verification_code.')', function($msg) use($email){ 
             $msg->to([$email])->subject('SecureBridge'); 
             $msg->from(['info@avocatoapp.net']); 
 

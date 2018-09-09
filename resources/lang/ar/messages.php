@@ -43,7 +43,8 @@ return [
     'is_paid' =>'هذا الحدث لم يتم تأكيد دفعه',
 	'current_available_tickets'=>'لايوجد تذاكر متاحة للحجز',
 	'category_not_found'=>'هذا التصنيف غير موجود',
-
+	 'noevents'=>'لا يوجد احداث',
+	 'noregions'=>'لا يوجد مناطق متاحه '
 
 
 

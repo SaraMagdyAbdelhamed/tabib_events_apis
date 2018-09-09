@@ -136,6 +136,10 @@ class EventsController extends Controller {
             $limit = array_key_exists('limit',$request_data) ? $request_data['limit']:10;
             $result =$data->WithPaginate($page,$limit)->get();
         }
+        if(count($result)==0)
+        {
+            return Helpers::Get_Response(204, 'No Content', trans('messages.noevents'), '',$result);  
+        }
         return Helpers::Get_Response(200, 'success', '', '',$result);
 
     }

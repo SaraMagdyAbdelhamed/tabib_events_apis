@@ -379,21 +379,21 @@ class UsersController extends Controller {
         if ($validator->fails()) {
             return Helpers::Get_Response(403, 'error', '', $validator->errors(), []);
         }
-        if (array_key_exists('MobileOrEmail', $request) && array_key_exists('password', $request)) {
+        if (array_key_exists('mobile', $request) && array_key_exists('password', $request)) {
 
             //////
 
             // if (isset($request['MobileOrEmail'])) {
-        $user = User::where("mobile", "=", $request['MobileOrEmail'])->where('tele_code', $request['tele_code'])->with('rules')->with('user_info')->first();
+        $user = User::where("mobile", "=", $request['mobile'])->where('tele_code', $request['tele_code'])->with('rules')->with('user_info')->first();
 
-                if (!$user) {
-                    $user = User::where("email", "=", $request['MobileOrEmail'])->with('rules')->with('user_info')->first();
+               // if (!$user) {
+                 //   $user = User::where("email", "=", $request['MobileOrEmail'])->with('rules')->with('user_info')->first();
                     if(! $user)
                     {
-                  return Helpers::Get_Response(400, 'error', trans('messages.mobile_or_email_isn’t_registered'), $validator->errors(), []);
+                  return Helpers::Get_Response(400, 'error', trans('messages.invalid_mobile_number'), $validator->errors(), []);
 
                     }
-                }
+              //  }
             // }else{
             //      return Helpers::Get_Response(400, 'error', trans('messages.invalid_mobile_number_or_email'), $validator->errors(), []);
             // }

@@ -21,7 +21,12 @@ class GeoRegionsController extends Controller {
 $regioncity[$key]= $region->getNameAttribute($region->name).','.$region->geo_city->getNameAttribute($region->geo_city->name);
 
       }
-        return response()->json($regions);
+      if(count($regions)==0)
+      {
+        return Helpers::Get_Response(204,'NO Content',trans('messages.noregions'),[],$regions); 
+      }
+      return Helpers::Get_Response(200,'success','',[],$regions);
+       // return response()->json($regions);
     }
 
 }
