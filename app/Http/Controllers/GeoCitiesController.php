@@ -17,15 +17,16 @@ class GeoCitiesController extends Controller {
     $lang_id = $request->input('lang_id');
     $locale =Helpers::Set_locale($lang_id);
     //dd($lang_id);
-      $cities= GeoCity::where('country_id',$request->input('country_id'))->get();
+      $cities= GeoCity::where('country_id',$request->input('country_id'))->with('geo_country')->get();
       $citycounty= array();
       foreach($cities as $key=>$city){
 
-// $citycounty[$key]= $city->name.','.$city->geo_country->name;
-$citycounty[$key]= $city->getNameAttribute($city->name).','.$city->geo_country->getNameAttribute($city->geo_country->name);
+    $citycounty[$key]= $city;
+//$citycounty[$key]= $city->getNameAttribute($city->name).','.$city->geo_country->getNameAttribute($city->geo_country->name);
 
       }
-        return response()->json($citycounty);
+        //return response()->json($cities);
+        return Helpers::Get_Response(200,'success','','',$cities);
     }
 
 
