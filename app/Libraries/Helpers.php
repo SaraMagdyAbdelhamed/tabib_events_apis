@@ -65,15 +65,15 @@ public static function localization($table_name, $field_name, $item_id, $lang_id
 
        public static function mail($email ,$code ,$verification_code){
         Mail::raw('Welcome To Tabib Events   Your code is ('.$code.' ) And Your Verification code is ('.$verification_code.')', function($msg) use($email){ 
-            $msg->to([$email])->subject('SecureBridge'); 
+            $msg->to([$email])->subject('Tabib'); 
             $msg->from(['info@avocatoapp.net']); 
 
           });
     }
 
     public static function mail_contact($body){
-        Mail::raw('Welcome To avocatoapp   New Feedback'.$body, function($msg){ 
-            $msg->to(['info@avocatoapp.net'])->subject('SecureBridge'); 
+        Mail::raw('Welcome To Tabib   New Feedback'.$body, function($msg){ 
+            $msg->to(['info@avocatoapp.net'])->subject('Tabib'); 
             $msg->from(['info@avocatoapp.net']); 
 
           });
@@ -90,8 +90,8 @@ public static function localization($table_name, $field_name, $item_id, $lang_id
 
    public static function mail_verify_withview($view,$email ,$email_verification_code){
      Mail::send($view, ['email' => $email, 'email_verification_code'=>$email_verification_code ], function($msg) use($email){
-          $msg->to([$email])->subject('Eventakom');
-          $msg->from(['pentavalue.eventakom@gmail.com']);
+          $msg->to([$email])->subject('Tabib');
+          $msg->from(['info@avocatoapp.net']);
       });
 
   }
