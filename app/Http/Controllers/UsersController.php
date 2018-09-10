@@ -447,8 +447,8 @@ class UsersController extends Controller {
 //                            "mobile_os"=>$request['mobile_os'],
 //                        ]);
                     //   $user_array = User::where('mobile', $request['mobile'])->where('tele_code', $request['tele_code'])->first();
-                      // $base_url = 'http://eventakom.com/eventakom_dev/public/';
-                      // $user_array->photo = $base_url.$user_array->photo;
+                    //   $base_url = 'hhttp://penta-test.com/doctors_events_dev_apis/public/';
+                    //   $user_array->photo = $base_url.$user_array->photo;
                         return Helpers::Get_Response(200, 'success', '', $validator->errors(), array($user));
                     } else {
                         return Helpers::Get_Response(400, 'error', trans('messages.active'), $validator->errors(), []);
