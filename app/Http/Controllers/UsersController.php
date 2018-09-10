@@ -53,8 +53,8 @@ class UsersController extends Controller {
         $input['mobile_verification_code'] = str_random(4);
         $input['is_mobile_verification_code_expired'] = 0;
         $input['email_verification_code'] = str_random(4);
-        $input['is_email_verified'] = 1;
-        $input['is_mobile_verified'] = 1;
+        $input['is_email_verified'] = 0;
+        $input['is_mobile_verified'] = 0;
         // $input['is_profile_completed']=1;
         if(isset($request['city_id'])){
         $city_id=$request['city_id'];
@@ -137,7 +137,7 @@ class UsersController extends Controller {
 
 
        // return Helpers::Get_Response(200, 'success', '', $validator->errors(),array($user));
-         return redirect('http://eventakom.com/');
+         return redirect('http://penta-test.com/doctors_events_dev/public/');
 
     }
 
