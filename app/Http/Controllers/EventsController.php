@@ -32,16 +32,24 @@ class EventsController extends Controller {
         }
         $validator = Validator::make($request_data,
             [
-                'event_id' => 'required'
+                'event_id' => 'required',
+                'api_token'=> 'required'
 
             ]);
         if ($validator->fails()) {
             return Helpers::Get_Response(403, 'error', trans('validation.required'), $validator->errors(), []);
         }
+        $user = User:: where("api_token", "=", $api_token)
+            ->first();
+        if (!$user) {
+            
+            return Helpers::Get_Response(400, 'error', trans('messages.logged'), [], []);
+        }
         //$user = User::where('api_token',$request->header('access-token'))->first()->id;
         $event = Event::where('id',$request_data['event_id'])
             ->with('EventCategory','media')
             ->withCount('GoingUsers')
+            ->Distance($user->latitude,$user->longitude)
             ->get();
 
         // Get You May Also Like
