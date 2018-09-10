@@ -24,6 +24,12 @@ class Event extends Model {
 
     /** Relations Section */
 
+    public function getImageAttribute($value){
+        $base_url = ENV('FOLDER');
+        $photo = ($value =='' || is_null($value)) ? '':$base_url.$value;
+        return $photo;
+    }
+
     public  function media(){
         return $this->hasMany('App\EventMedia' , 'event_id');
     }
