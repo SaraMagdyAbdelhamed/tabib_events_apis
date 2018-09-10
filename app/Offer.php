@@ -38,7 +38,7 @@ class Offer extends Model {
 
     public function getImageAttribute($value){
         
-            $base_url = 'http://penta-test.com/doctors_events_dev/public/';
+            $base_url = ENV('FOLDER');
             $photo =($value =='' || is_null($value)) ? '':$base_url.$value;
             return $photo;
     }
