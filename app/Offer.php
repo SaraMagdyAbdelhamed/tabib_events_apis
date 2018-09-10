@@ -11,12 +11,12 @@ class Offer extends Model {
     public $dates = ['created_at','updated_at'];
     
     public function getImageEnAttribute($value){
-        $base_url = 'http://penta-test.com/doctors_events_dev/public/';
+        $base_url = ENV('FOLDER');
         $photo = ($value =='' || is_null($value)) ? '':$base_url.$value;
         return $photo;
     }
     public function getImageArAttribute($value){
-        $base_url = 'http://penta-test.com/doctors_events_dev/public/';
+        $base_url = ENV('FOLDER');
         $photo = ($value =='' || is_null($value)) ? '':$base_url.$value;
         return $photo;
     }

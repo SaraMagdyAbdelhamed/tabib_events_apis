@@ -85,7 +85,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
     public function getPhotoAttribute($value)
     {
-        $base_url = 'http://penta-test.com/doctors_events_dev/public/';
+        $base_url = ENV('FOLDER');
         $photo = $base_url.$value;
         return $photo;
     }
