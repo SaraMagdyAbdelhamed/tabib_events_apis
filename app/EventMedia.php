@@ -18,7 +18,7 @@ class EventMedia extends Model {
 
     public function getLinkAttribute($value){
         if($this->type == 1){
-            $base_url = 'http://penta-test.com/doctors_events_dev_apis/public/';
+            $base_url = 'http://penta-test.com/doctors_events_dev/public/';
             $photo = $base_url.$value;
             return $photo;
 

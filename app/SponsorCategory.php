@@ -17,7 +17,7 @@ class SponsorCategory extends Model {
 
 
     public function getImageAttribute($value){
-        $base_url = 'http://penta-test.com/doctors_events_dev_apis/public/';
+        $base_url = 'http://penta-test.com/doctors_events_dev/public/';
         $photo = ($value =='' || is_null($value)) ? '':$base_url.$value;
         return $photo;
     }

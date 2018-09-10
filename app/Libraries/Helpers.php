@@ -66,23 +66,23 @@ public static function localization($table_name, $field_name, $item_id, $lang_id
        public static function mail($email ,$code ,$verification_code){
         Mail::raw('Welcome To Tabib Events   Your code is ('.$code.' ) And Your Verification code is ('.$verification_code.')', function($msg) use($email){ 
             $msg->to([$email])->subject('Tabib'); 
-            $msg->from(['info@avocatoapp.net']); 
+            $msg->from(['tabib_events@penta-test.com']); 
 
           });
     }
 
     public static function mail_contact($body){
         Mail::raw('Welcome To Tabib   New Feedback'.$body, function($msg){ 
-            $msg->to(['info@avocatoapp.net'])->subject('Tabib'); 
-            $msg->from(['info@avocatoapp.net']); 
+            $msg->to(['tabib_events@penta-test.com'])->subject('Tabib'); 
+            $msg->from(['tabib_events@penta-test.com']); 
 
           });
     }
 
     public static function mail_verify($email ,$code ,$verification_code){
-      Mail::raw('Welcome To Eventakom  ..Please verify your Email by visiting this link: http://eventakom.com/api/verify_email?email='.$email.'&email_verification_code='.$verification_code, function($msg) use($email){
+      Mail::raw('Welcome To Tabib Events  ..Please verify your Email by visiting this link: http://penta-test.com/doctors_events_dev_apis/public/verify_email?email='.$email.'&email_verification_code='.$verification_code, function($msg) use($email){
           $msg->to([$email])->subject('Eventakom');
-          $msg->from(['pentavalue.eventakom@gmail.com']);
+          $msg->from(['tabib_events@penta-test.com']);
           // dd( $msg->getSwiftMessage()); 
         });
   }
@@ -91,7 +91,7 @@ public static function localization($table_name, $field_name, $item_id, $lang_id
    public static function mail_verify_withview($view,$email ,$email_verification_code){
      Mail::send($view, ['email' => $email, 'email_verification_code'=>$email_verification_code ], function($msg) use($email){
           $msg->to([$email])->subject('Tabib');
-          $msg->from(['info@avocatoapp.net']);
+          $msg->from(['tabib_events@penta-test.com']);
       });
 
   }
