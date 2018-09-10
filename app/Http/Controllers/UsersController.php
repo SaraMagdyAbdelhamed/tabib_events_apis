@@ -231,8 +231,8 @@ class UsersController extends Controller {
         //     $user->update(['is_email_verified' => 0]);
         // }
          $user_array = User:: where("api_token", "=", $api_token)->first();
-        $base_url = 'http://penta-test.com/doctors_events_dev_apis/public/';
-        $user_array->photo = $base_url.$user_array->photo;
+        // $base_url = 'http://penta-test.com/doctors_events_dev_apis/public/';
+        // $user_array->photo = $base_url.$user_array->photo;
         // $user_array->user_info()->update([
         //     'address'=>$request['address'],
         //     'specialization_id'=>$request['specialization_id'],
@@ -438,9 +438,9 @@ class UsersController extends Controller {
                         // $user_array['rule_ids']  = $rule_ids;
                         // $user_array['rules'] = $rules;
                         // $user['roles']=$rules;
-                        if ($user['photo'] != null) {
-                            $user['photo'] = ENV('FOLDER') . $user['photo'];
-                        }
+                        // if ($user['photo'] != null) {
+                        //     $user['photo'] = ENV('FOLDER') . $user['photo'];
+                        // }
 //                        $user->update([
 //                            "device_token"=>$request['device_token'],
 //                            "lang_id"=>$request['lang_id']
@@ -519,7 +519,7 @@ class UsersController extends Controller {
             if ($user) {
                 $user->update(['lang_id' => $request['lang_id']]);
                 $user->save();
-                $base_url = 'http://penta-test.com/doctors_events_dev_apis/public/';
+                // $base_url = 'http://penta-test.com/doctors_events_dev_apis/public/';
                  $user_array = User:: where("api_token", "=", $api_token)->first();
                 // $user_array->photo = $base_url.$user_array->photo;
                 return Helpers::Get_Response(200, 'success', '', '', array($user_array));
@@ -631,8 +631,8 @@ class UsersController extends Controller {
                     // $mail=Helpers::mail($user->email,$user->username,$mobile_verification_code);
                 }
                 $user_array = User::where('mobile', $request['mobile'])->where('tele_code', $request['tele_code'])->first();
-                $base_url = 'http://penta-test.com/doctors_events_dev_apis/public/';
-                $user_array->photo = $base_url.$user_array->photo;
+                // $base_url = 'http://penta-test.com/doctors_events_dev_apis/public/';
+                // $user_array->photo = $base_url.$user_array->photo;
                 return Helpers::Get_Response(200, 'success', '', $validator->errors(), array($user_array));
 
             }
@@ -683,8 +683,8 @@ class UsersController extends Controller {
             return Helpers::Get_Response(400, 'error', trans('messages.mobile_number_not_registered'), $validator->errors(), []);
         }
         $user_array = User::where('mobile', $request['mobile'])->where('tele_code', $request['tele_code'])->first();
-        $base_url = 'http://penta-test.com/doctors_events_dev_apis/public/';
-        $user_array->photo = $base_url.$user_array->photo;
+        // $base_url = 'http://penta-test.com/doctors_events_dev_apis/public/';
+        // $user_array->photo = $base_url.$user_array->photo;
         return Helpers::Get_Response(200, 'success', '', $validator->errors(), array($user_array));
 
     }
@@ -772,8 +772,8 @@ class UsersController extends Controller {
     }
 
         $user_array = User::where('mobile', $request['mobile'])->where('tele_code', $request['tele_code'])->first();
-        $base_url = 'http://penta-test.com/doctors_events_dev_apis/public/';
-        $user_array->photo = $base_url.$user_array->photo;
+        // $base_url = 'http://penta-test.com/doctors_events_dev_apis/public/';
+        // $user_array->photo = $base_url.$user_array->photo;
         return Helpers::Get_Response(200, 'success', '', $validator->errors(),array($user_array));
 
     }
