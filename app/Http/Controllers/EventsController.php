@@ -39,7 +39,7 @@ class EventsController extends Controller {
         if ($validator->fails()) {
             return Helpers::Get_Response(403, 'error', trans('validation.required'), $validator->errors(), []);
         }
-        $user = User:: where("api_token", "=", $api_token)
+        $user = User:: where("api_token", "=", $request['api_token'])
             ->first();
         if (!$user) {
             
