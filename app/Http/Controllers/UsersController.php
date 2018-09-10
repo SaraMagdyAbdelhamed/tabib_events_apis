@@ -369,7 +369,7 @@ class UsersController extends Controller {
             Helpers::Set_locale($request['lang_id']);
         }
         $validator = Validator::make($request, [
-            "MobileOrEmail" => "required",
+            "mobile" => "required",
             "tele_code"=>"required",
             "password" => "required|min:8|max:20",
 //            "device_token"=>'required',

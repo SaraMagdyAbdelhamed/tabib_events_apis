@@ -13,7 +13,7 @@ class Base64ToImageService
     // protected $upload_path;
        protected $base_path="C:/xampp\htdocs\secure_bridge\public/";
 //    protected $base_path = "/home/evilcell/public_html/secure_bridge/public/";
-        //  protected $base_path = "/home/avocatoapp/public_html/secure_bridge/public/";
+        //  protected $base_path = "/home/tabib/public_html/doctors_events_dev_apis/public/";
 
     private function __construct(){}
 
