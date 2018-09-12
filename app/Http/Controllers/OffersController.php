@@ -37,6 +37,7 @@ class OffersController extends Controller {
         $offer->total_sum_ratings=$offer->total_sum_ratings+$request['rate'];
         $offer->rating_avg=$offer->total_number_of_ratings/$offer->total_sum_ratings;
         $offer->save();
+        
         return Helpers::Get_Response(200,'success','',[],$offer);
     }
 
