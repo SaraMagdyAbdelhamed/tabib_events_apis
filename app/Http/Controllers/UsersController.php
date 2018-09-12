@@ -70,7 +70,7 @@ class UsersController extends Controller {
         $user_info->user_id=$user->id;
         $user_info->region_id=$request['region_id'];
         $user_info->is_backend=0;
-        $user_info->is_profile_completed=1;
+        $user_info->is_profile_completed=0;
         if(isset($request['mobile2']))
         {
             $user_info->mobile2=$request['mobile2']; 
