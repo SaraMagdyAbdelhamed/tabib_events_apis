@@ -52,6 +52,19 @@ class EventsController extends Controller {
             ->withCount('GoingUsers')
             ->Distance($user->latitude,$user->longitude,'km')
             ->get();
+        $going=Event::UserGoingThisEvent($user);
+        if(count($going) != 0)
+        {
+            $is_going=1;
+        }
+        else
+        {
+            $is_going=0;
+        }
+        $event->map(function ($e) use ($is_going){
+            $e['is_going'] = $is_going;
+            return $e;
+        });
         }
         else {
             $event = Event::Distance(0,0,'km')
@@ -59,17 +72,23 @@ class EventsController extends Controller {
             ->with('EventCategory','media')
             ->withCount('GoingUsers')
             ->get();
-
-            $event['is_going']=0;
             // dd($event);
+            //  $event=array($event);
+            //  $event['is_going']=0;
+            $event->map(function ($e) {
+                $e['is_going'] = 0;
+                return $e;
+            });
+            //  $event=(object)$event[1];
+            //  dd($event);
             
         }
        
 
         // Get You May Also Like
-        if($event->isEmpty()){
-            return Helpers::Get_Response(403, 'error', 'not found', [], []);
-        }
+        // if($event->isEmpty()){
+        //     return Helpers::Get_Response(403, 'error', 'not found', [], []);
+        // }
         // $category_ids = Event::find($request_data['event_id'])->EventCategory->pluck('pivot.category_id');
         // $random = array_key_exists('random_limit',$request_data) ? $request_data['random_limit'] :10;
         // $count = Event::EventsInCategories($category_ids)->get()->count();

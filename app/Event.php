@@ -78,7 +78,7 @@ class Event extends Model {
 
 
 
-    public  function UserGoingThisEvent($user){
+    public  static function UserGoingThisEvent($user){
         return static::query()->join('user_going','events.id','=','user_going.event_id')
                ->where('user_going.user_id',$user)
                 ->first();
