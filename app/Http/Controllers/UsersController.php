@@ -80,6 +80,7 @@ class UsersController extends Controller {
             $user_info->mobile2=$request['mobile3']; 
         }
         $user_info->save();
+        $user->rules()->attach(2);
         // $user_info->users()->save($user);
         $user_array = User::where('mobile','=',$request['mobile'])->first();
  
