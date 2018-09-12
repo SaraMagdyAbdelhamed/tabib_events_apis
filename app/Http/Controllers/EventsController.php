@@ -59,6 +59,8 @@ class EventsController extends Controller {
             ->with('EventCategory','media')
             ->withCount('GoingUsers')
             ->get();
+
+            $event['is_going']=0;
             // dd($event);
             
         }

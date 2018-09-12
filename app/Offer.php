@@ -54,4 +54,9 @@ class Offer extends Model {
     {
     return $this->hasMany('App\OfferRequest','offer_id');
     }
+
+    public function sponsor()
+    {
+        return $this->belongsTo('App\User','sponsor_id');
+    }
 }

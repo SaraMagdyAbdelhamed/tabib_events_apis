@@ -53,7 +53,11 @@ class OffersController extends Controller {
 
     public function get_offer($id)
     {
-      $offer = Offer::where('id',$id)->with('categories')->get();
+      $offer = Offer::where('id',$id)->with('categories')->with('sponsor')->get();
+      if(count($offer)==0)
+      {
+        return Helpers::Get_Response(204,'No Content','',[],$offer);
+      }
       return Helpers::Get_Response(200,'success','',[],$offer);
     }
 }
