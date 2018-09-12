@@ -32,14 +32,15 @@ class EventsController extends Controller {
         }
         $validator = Validator::make($request_data,
             [
-                'event_id' => 'required',
-                'api_token'=> 'required'
+                'event_id' => 'required'
 
             ]);
         if ($validator->fails()) {
             return Helpers::Get_Response(403, 'error', trans('validation.required'), $validator->errors(), []);
         }
-        $user = User:: where("api_token", "=", $request['api_token'])
+        if(array_key_exists('access-token',$request->header()))
+        {
+            $user = User:: where("api_token", "=", $request->header('access-token'))
             ->first();
         if (!$user) {
             
@@ -49,8 +50,19 @@ class EventsController extends Controller {
         $event = Event::where('id',$request_data['event_id'])
             ->with('EventCategory','media')
             ->withCount('GoingUsers')
-            ->Distance($user->latitude,$user->longitude)
+            ->Distance($user->latitude,$user->longitude,'km')
             ->get();
+        }
+        else {
+            $event = Event::Distance(0,0,'km')
+            ->where('id',$request_data['event_id'])
+            ->with('EventCategory','media')
+            ->withCount('GoingUsers')
+            ->get();
+            // dd($event);
+            
+        }
+       
 
         // Get You May Also Like
         if($event->isEmpty()){

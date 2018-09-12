@@ -168,14 +168,13 @@ class Event extends Model {
      *
      * @return Illuminate\Database\Query\Builder          Modified query builder
      */
-    public function scopeDistance($query, $lat, $lng, $radius = 100, $unit = "km")
+    public function scopeDistance($query, $lat, $lng, $unit = "km")
     {
         $unit = ($unit === "km") ? 6378.10 : 3963.17;
         $lat = (float) $lat;
         $lng = (float) $lng;
-        $radius = (double) $radius;
-        return $query->having('distance','<=',$radius)
-            ->select(DB::raw("*,
+        // $radius = (double) $radius;
+        return $query ->select(DB::raw("*,
                             ($unit * ACOS(COS(RADIANS($lat))
                                 * COS(RADIANS(latitude))
                                 * COS(RADIANS($lng) - RADIANS(longtuide))
