@@ -24,6 +24,12 @@ class Event extends Model {
 
     /** Relations Section */
 
+    public function getImageAttribute($value){
+        $base_url = ENV('FOLDER');
+        $photo = ($value =='' || is_null($value)) ? '':$base_url.$value;
+        return $photo;
+    }
+
     public  function media(){
         return $this->hasMany('App\EventMedia' , 'event_id');
     }
@@ -72,7 +78,7 @@ class Event extends Model {
 
 
 
-    public  function UserGoingThisEvent($user){
+    public  static function UserGoingThisEvent($user){
         return static::query()->join('user_going','events.id','=','user_going.event_id')
                ->where('user_going.user_id',$user)
                 ->first();
@@ -162,14 +168,13 @@ class Event extends Model {
      *
      * @return Illuminate\Database\Query\Builder          Modified query builder
      */
-    public function scopeDistance($query, $lat, $lng, $radius = 100, $unit = "km")
+    public function scopeDistance($query, $lat, $lng, $unit = "km")
     {
         $unit = ($unit === "km") ? 6378.10 : 3963.17;
         $lat = (float) $lat;
         $lng = (float) $lng;
-        $radius = (double) $radius;
-        return $query->having('distance','<=',$radius)
-            ->select(DB::raw("*,
+        // $radius = (double) $radius;
+        return $query ->select(DB::raw("*,
                             ($unit * ACOS(COS(RADIANS($lat))
                                 * COS(RADIANS(latitude))
                                 * COS(RADIANS($lng) - RADIANS(longtuide))

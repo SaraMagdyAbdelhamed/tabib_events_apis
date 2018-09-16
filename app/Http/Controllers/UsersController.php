@@ -23,9 +23,9 @@ class UsersController extends Controller {
     {
 
         $twilio_config = [
-            'app_id' => 'AC3adf7af798b1515700c517b58bdfc56b',
-            'token' => '7f31eeed993ba1f5d62fd7ef2a3b1354',
-            'from' => '+16039452091'
+            'app_id' => 'AC2305889581179ad67b9d34540be8ecc1',
+            'token' => '2021c86af33bd8f3b69394a5059c34f0',
+            'from' => '+13238701693'
         ];
 
         $twilio = new TwilioSmsService($twilio_config);
@@ -53,8 +53,8 @@ class UsersController extends Controller {
         $input['mobile_verification_code'] = str_random(4);
         $input['is_mobile_verification_code_expired'] = 0;
         $input['email_verification_code'] = str_random(4);
-        $input['is_email_verified'] = 1;
-        $input['is_mobile_verified'] = 1;
+        $input['is_email_verified'] = 0;
+        $input['is_mobile_verified'] = 0;
         // $input['is_profile_completed']=1;
         if(isset($request['city_id'])){
         $city_id=$request['city_id'];
@@ -70,7 +70,7 @@ class UsersController extends Controller {
         $user_info->user_id=$user->id;
         $user_info->region_id=$request['region_id'];
         $user_info->is_backend=0;
-        $user_info->is_profile_completed=1;
+        $user_info->is_profile_completed=0;
         if(isset($request['mobile2']))
         {
             $user_info->mobile2=$request['mobile2']; 
@@ -80,6 +80,7 @@ class UsersController extends Controller {
             $user_info->mobile2=$request['mobile3']; 
         }
         $user_info->save();
+        $user->rules()->attach(2);
         // $user_info->users()->save($user);
         $user_array = User::where('mobile','=',$request['mobile'])->first();
  
@@ -137,16 +138,16 @@ class UsersController extends Controller {
 
 
        // return Helpers::Get_Response(200, 'success', '', $validator->errors(),array($user));
-         return redirect('http://eventakom.com/');
+         return redirect('http://penta-test.com/doctors_events_dev/public/');
 
     }
 
     public function edit_profile(Request $request)
     {
         $twilio_config = [
-            'app_id' => 'AC3adf7af798b1515700c517b58bdfc56b',
-            'token' => '7f31eeed993ba1f5d62fd7ef2a3b1354',
-            'from' => '+16039452091'
+            'app_id' => 'AC2305889581179ad67b9d34540be8ecc1',
+            'token' => '2021c86af33bd8f3b69394a5059c34f0',
+            'from' => '+13238701693'
         ];
 
         $twilio = new TwilioSmsService($twilio_config);
@@ -231,7 +232,7 @@ class UsersController extends Controller {
         //     $user->update(['is_email_verified' => 0]);
         // }
          $user_array = User:: where("api_token", "=", $api_token)->first();
-        // $base_url = 'http://eventakom.com/eventakom_dev/public/';
+        // $base_url = 'http://penta-test.com/doctors_events_dev_apis/public/';
         // $user_array->photo = $base_url.$user_array->photo;
         // $user_array->user_info()->update([
         //     'address'=>$request['address'],
@@ -369,7 +370,7 @@ class UsersController extends Controller {
             Helpers::Set_locale($request['lang_id']);
         }
         $validator = Validator::make($request, [
-            "MobileOrEmail" => "required",
+            "mobile" => "required",
             "tele_code"=>"required",
             "password" => "required|min:8|max:20",
 //            "device_token"=>'required',
@@ -438,17 +439,17 @@ class UsersController extends Controller {
                         // $user_array['rule_ids']  = $rule_ids;
                         // $user_array['rules'] = $rules;
                         // $user['roles']=$rules;
-                        if ($user['photo'] != null) {
-                            $user['photo'] = ENV('FOLDER') . $user['photo'];
-                        }
+                        // if ($user['photo'] != null) {
+                        //     $user['photo'] = ENV('FOLDER') . $user['photo'];
+                        // }
 //                        $user->update([
 //                            "device_token"=>$request['device_token'],
 //                            "lang_id"=>$request['lang_id']
 //                            "mobile_os"=>$request['mobile_os'],
 //                        ]);
                     //   $user_array = User::where('mobile', $request['mobile'])->where('tele_code', $request['tele_code'])->first();
-                      // $base_url = 'http://eventakom.com/eventakom_dev/public/';
-                      // $user_array->photo = $base_url.$user_array->photo;
+                    //   $base_url = 'hhttp://penta-test.com/doctors_events_dev_apis/public/';
+                    //   $user_array->photo = $base_url.$user_array->photo;
                         return Helpers::Get_Response(200, 'success', '', $validator->errors(), array($user));
                     } else {
                         return Helpers::Get_Response(400, 'error', trans('messages.active'), $validator->errors(), []);
@@ -519,7 +520,7 @@ class UsersController extends Controller {
             if ($user) {
                 $user->update(['lang_id' => $request['lang_id']]);
                 $user->save();
-                $base_url = 'http://eventakom.com/eventakom_dev/public/';
+                // $base_url = 'http://penta-test.com/doctors_events_dev_apis/public/';
                  $user_array = User:: where("api_token", "=", $api_token)->first();
                 // $user_array->photo = $base_url.$user_array->photo;
                 return Helpers::Get_Response(200, 'success', '', '', array($user_array));
@@ -631,7 +632,7 @@ class UsersController extends Controller {
                     // $mail=Helpers::mail($user->email,$user->username,$mobile_verification_code);
                 }
                 $user_array = User::where('mobile', $request['mobile'])->where('tele_code', $request['tele_code'])->first();
-                // $base_url = 'http://eventakom.com/eventakom_dev/public/';
+                // $base_url = 'http://penta-test.com/doctors_events_dev_apis/public/';
                 // $user_array->photo = $base_url.$user_array->photo;
                 return Helpers::Get_Response(200, 'success', '', $validator->errors(), array($user_array));
 
@@ -683,7 +684,7 @@ class UsersController extends Controller {
             return Helpers::Get_Response(400, 'error', trans('messages.mobile_number_not_registered'), $validator->errors(), []);
         }
         $user_array = User::where('mobile', $request['mobile'])->where('tele_code', $request['tele_code'])->first();
-        // $base_url = 'http://eventakom.com/eventakom_dev/public/';
+        // $base_url = 'http://penta-test.com/doctors_events_dev_apis/public/';
         // $user_array->photo = $base_url.$user_array->photo;
         return Helpers::Get_Response(200, 'success', '', $validator->errors(), array($user_array));
 
@@ -772,7 +773,7 @@ class UsersController extends Controller {
     }
 
         $user_array = User::where('mobile', $request['mobile'])->where('tele_code', $request['tele_code'])->first();
-        // $base_url = 'http://eventakom.com/eventakom_dev/public/';
+        // $base_url = 'http://penta-test.com/doctors_events_dev_apis/public/';
         // $user_array->photo = $base_url.$user_array->photo;
         return Helpers::Get_Response(200, 'success', '', $validator->errors(),array($user_array));
 

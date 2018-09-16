@@ -17,7 +17,7 @@ class SponsorCategory extends Model {
 
 
     public function getImageAttribute($value){
-        $base_url = 'http://eventakom.com/eventakom_dev/public/';
+        $base_url = ENV('FOLDER');
         $photo = ($value =='' || is_null($value)) ? '':$base_url.$value;
         return $photo;
     }

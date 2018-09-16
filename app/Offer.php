@@ -11,12 +11,12 @@ class Offer extends Model {
     public $dates = ['created_at','updated_at'];
     
     public function getImageEnAttribute($value){
-        $base_url = 'http://eventakom.com/eventakom_dev/public/';
+        $base_url = ENV('FOLDER');
         $photo = ($value =='' || is_null($value)) ? '':$base_url.$value;
         return $photo;
     }
     public function getImageArAttribute($value){
-        $base_url = 'http://eventakom.com/eventakom_dev/public/';
+        $base_url = ENV('FOLDER');
         $photo = ($value =='' || is_null($value)) ? '':$base_url.$value;
         return $photo;
     }
@@ -38,7 +38,7 @@ class Offer extends Model {
 
     public function getImageAttribute($value){
         
-            $base_url = 'http://eventakom.com/eventakom_dev/public/';
+            $base_url = ENV('FOLDER');
             $photo =($value =='' || is_null($value)) ? '':$base_url.$value;
             return $photo;
     }
@@ -53,5 +53,10 @@ class Offer extends Model {
     public function requests()
     {
     return $this->hasMany('App\OfferRequest','offer_id');
+    }
+
+    public function sponsor()
+    {
+        return $this->belongsTo('App\User','sponsor_id');
     }
 }

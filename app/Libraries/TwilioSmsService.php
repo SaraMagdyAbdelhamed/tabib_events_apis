@@ -33,7 +33,7 @@ class TwilioSmsService
 				$to,
 				[
 					'from' => $this->from,
-					'body' => 'avocatoapp.com verification code is : '.$body 
+					'body' => 'Tabib events verification code is : '.$body 
 				]
 			);
 

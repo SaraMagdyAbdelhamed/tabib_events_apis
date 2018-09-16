@@ -38,16 +38,57 @@ class EventsController extends Controller {
         if ($validator->fails()) {
             return Helpers::Get_Response(403, 'error', trans('validation.required'), $validator->errors(), []);
         }
+        if(array_key_exists('access-token',$request->header()))
+        {
+            $user = User:: where("api_token", "=", $request->header('access-token'))
+            ->first();
+        if (!$user) {
+            
+            return Helpers::Get_Response(400, 'error', trans('messages.logged'), [], []);
+        }
         //$user = User::where('api_token',$request->header('access-token'))->first()->id;
         $event = Event::where('id',$request_data['event_id'])
             ->with('EventCategory','media')
             ->withCount('GoingUsers')
+            ->Distance($user->latitude,$user->longitude,'km')
             ->get();
+        $going=Event::UserGoingThisEvent($user);
+        if(count($going) != 0)
+        {
+            $is_going=1;
+        }
+        else
+        {
+            $is_going=0;
+        }
+        $event->map(function ($e) use ($is_going){
+            $e['is_going'] = $is_going;
+            return $e;
+        });
+        }
+        else {
+            $event = Event::Distance(0,0,'km')
+            ->where('id',$request_data['event_id'])
+            ->with('EventCategory','media')
+            ->withCount('GoingUsers')
+            ->get();
+            // dd($event);
+            //  $event=array($event);
+            //  $event['is_going']=0;
+            $event->map(function ($e) {
+                $e['is_going'] = 0;
+                return $e;
+            });
+            //  $event=(object)$event[1];
+            //  dd($event);
+            
+        }
+       
 
         // Get You May Also Like
-        if($event->isEmpty()){
-            return Helpers::Get_Response(403, 'error', 'not found', [], []);
-        }
+        // if($event->isEmpty()){
+        //     return Helpers::Get_Response(403, 'error', 'not found', [], []);
+        // }
         // $category_ids = Event::find($request_data['event_id'])->EventCategory->pluck('pivot.category_id');
         // $random = array_key_exists('random_limit',$request_data) ? $request_data['random_limit'] :10;
         // $count = Event::EventsInCategories($category_ids)->get()->count();

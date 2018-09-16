@@ -65,6 +65,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
     return $this->hasMany('App\OfferRequest','user_id');
     }
+    public function offer()
+    {
+        return $this->hasMany('App\Offer','sponsor_id');
+    }
     public function user_info()
     {
         return $this->hasOne('App\userInfo','user_id');
@@ -85,7 +89,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
     public function getPhotoAttribute($value)
     {
-        $base_url = 'http://eventakom.com/eventakom_dev/public/';
+        $base_url = ENV('FOLDER');
         $photo = $base_url.$value;
         return $photo;
     }
