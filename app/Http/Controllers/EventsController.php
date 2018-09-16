@@ -47,12 +47,13 @@ class EventsController extends Controller {
             return Helpers::Get_Response(400, 'error', trans('messages.logged'), [], []);
         }
         //$user = User::where('api_token',$request->header('access-token'))->first()->id;
-        $event = Event::where('id',$request_data['event_id'])
+        $event = Event:: Distance($user->latitude,$user->longitude,'km')
+           ->where('id',$request_data['event_id'])
             ->with('EventCategory','media')
             ->withCount('GoingUsers')
-            ->Distance($user->latitude,$user->longitude,'km')
             ->get();
-        $going=Event::UserGoingThisEvent($user);
+        $going=Event::UserGoingThisEvent($user->id);
+        // dd($going);
         if(count($going) != 0)
         {
             $is_going=1;
@@ -86,9 +87,9 @@ class EventsController extends Controller {
        
 
         // Get You May Also Like
-        // if($event->isEmpty()){
-        //     return Helpers::Get_Response(403, 'error', 'not found', [], []);
-        // }
+        if($event->isEmpty()){
+            return Helpers::Get_Response(403, 'error', 'not found', [], []);
+        }
         // $category_ids = Event::find($request_data['event_id'])->EventCategory->pluck('pivot.category_id');
         // $random = array_key_exists('random_limit',$request_data) ? $request_data['random_limit'] :10;
         // $count = Event::EventsInCategories($category_ids)->get()->count();
