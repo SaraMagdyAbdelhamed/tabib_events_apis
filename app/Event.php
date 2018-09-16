@@ -135,7 +135,7 @@ class Event extends Model {
     }
     public function ScopeNextMonthEvents($query){
         return $query->whereMonth("end_datetime",Carbon::now()->addMonth()->month);
-
+ 
     }
     public function ScopeCreatedByUser($query,$user){
         return $query->Where('created_by','=',$user->id);
