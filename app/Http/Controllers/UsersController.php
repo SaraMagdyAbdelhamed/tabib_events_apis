@@ -185,18 +185,20 @@ class UsersController extends Controller
             }
         }
 
-        $validator = Validator::make($request,
-            [
-                'first_name' => 'between:1,100',
-                'email' => $email_valid,
-                //  'region_id' => 'required',
-                'mobile' => $mobile_valid,
-                // 'password' => 'required|between:8,20',
-                'mobile_os' => 'in:android,ios',
-                'lang_id' => 'in:1,2',
-                // 'country_id'=>'required',
+        $validation_array = [
+            'first_name' => 'between:1,100',
+            'email' => $email_valid,
+            'mobile_os' => 'in:android,ios',
+            'lang_id' => 'in:1,2',
 
-            ]);
+        ];
+
+        if (array_key_exists('mobile', $request)) {
+            $validation_array += array('mobile' => $request['mobile']);
+        }
+
+        $validator = Validator::make($request, $validation_array);
+
         if ($validator->fails()) {
             return Helpers::Get_Response(403, 'error', '', $validator->errors(), []);
         }
@@ -215,7 +217,11 @@ class UsersController extends Controller
         // $input['password'] = $user->password;
         //$input['is_active'] = 0;
         $input['username'] = $request['first_name'];
-        $input['mobile'] = $request['mobile'];
+
+        if (array_key_exists('mobile', $request)) {
+            $input['mobile'] = $request['mobile'];
+        }
+
         $city_id = $request['city_id'];
         $city = GeoCity::find($city_id);
         $input['country_id'] = $city->geo_country->id;
@@ -247,7 +253,12 @@ class UsersController extends Controller
         //     'region_id'=>$request['region_id']
         // ]);
         if ($user_array) {
-            $sms_mobile = $request['tele_code'] . '' . $request['mobile'];
+            if ( array_key_exists('tele_code', $request) && array_key_exists('mobile', $request) ) {
+                $sms_mobile = $request['tele_code'] . '' . $request['mobile'];
+            } else {
+                $sms_mobile = $user_array->tele_code . '' . $user_array->mobile;
+            }
+
             $sms_body = trans('messages.your_verification_code_is') . $input['mobile_verification_code'];
             $status = $twilio->send($sms_mobile, $sms_body);
             //process rules
@@ -533,7 +544,7 @@ class UsersController extends Controller
 
         ]);
         if ($validator->fails()) {
-            return Helpers::Get_Response(403, 'error', '', $validator->errors(), []);
+            return Helpers::Get_Response(403, 'error', 'Invalid or missing parameters!', $validator->errors(), []);
         } else {
             $twilio_config = [
                 'app_id' => 'AC2305889581179ad67b9d34540be8ecc1',
@@ -548,7 +559,7 @@ class UsersController extends Controller
 
             $user = User::where('mobile', $request['mobile'])->where('tele_code', $request['tele_code'])->first();
             if (!$user) {
-                return Helpers::Get_Response(403, 'error', '', $validator->errors(), []);
+                return Helpers::Get_Response(403, 'error', trans('messages.mobile_number_not_registered'), $validator->errors(), []);
             } else {
                 $mobile_verification_code = str_random(4);
                 $sms_mobile = $user->tele_code . '' . $user->mobile;
@@ -573,7 +584,12 @@ class UsersController extends Controller
                     $user_array = User::where('mobile', $request['mobile'])->where('tele_code', $request['tele_code'])->first();
                     // $base_url = 'http://eventakom.com/eventakom_dev/public/';
                     // $user_array->photo = $base_url.$user_array->photo;
-                    return Helpers::Get_Response(200, 'success', '', $validator->errors(), array($user_array));
+
+                    if ( $user_array == null ) {
+                        return Helpers::Get_Response(400, 'error', trans('messages.mobile_number_not_registered'), $validator->errors(), []);
+                    }
+
+                    return Helpers::Get_Response(200, 'success', 'Verification code has been resend succesfully', $validator->errors(), array($user_array));
                 } //date_format("Y-m-d", $user->verification_date) dont forget
                 elseif ($user->verification_count >= 5 && $user_date != Carbon::now()->format('Y-m-d')) {
                     //set is_mobile_verification_code_expired to 0
@@ -597,7 +613,12 @@ class UsersController extends Controller
                     $user_array = User::where('mobile', $request['mobile'])->where('tele_code', $request['tele_code'])->first();
                     // $base_url = 'http://eventakom.com/eventakom_dev/public/';
                     // $user_array->photo = $base_url.$user_array->photo;
-                    return Helpers::Get_Response(200, 'success', '', $validator->errors(), array($user_array));
+
+                    if ($user_array == null) {
+                        return Helpers::Get_Response(400, 'error', trans('messages.mobile_number_not_registered'), $validator->errors(), []);
+                    }
+
+                    return Helpers::Get_Response(200, 'success', 'Verification code has been resend succesfully', $validator->errors(), array($user_array));
                 } elseif ($user->verification_count >= 5 && $user_date == Carbon::now()->format('Y-m-d')) {
                     //set is_mobile_verification_code_expired to 1
                     $user->is_mobile_verified = 0;
@@ -623,7 +644,7 @@ class UsersController extends Controller
                     $user_array = User::where('mobile', $request['mobile'])->where('tele_code', $request['tele_code'])->first();
                     // $base_url = 'http://penta-test.com/doctors_events_dev_apis/public/';
                     // $user_array->photo = $base_url.$user_array->photo;
-                    return Helpers::Get_Response(200, 'success', '', $validator->errors(), array($user_array));
+                    return Helpers::Get_Response(200, 'success', 'Verification code has been resend succesfully', $validator->errors(), array($user_array));
 
                 }
             }
