@@ -543,6 +543,7 @@ class UsersController extends Controller
 
             $twilio = new TwilioSmsService($twilio_config);
 
+            // convert mobile number to integer
             $request['mobile'] = strval($request['mobile']);
 
             $user = User::where('mobile', $request['mobile'])->where('tele_code', $request['tele_code'])->first();
