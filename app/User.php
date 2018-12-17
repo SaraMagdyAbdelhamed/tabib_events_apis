@@ -35,8 +35,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'password',
     ];
 
-    public static $rules = 
-    [ 
+    public static $rules =
+    [
     'first_name' => 'between:1,100',
     'last_name' => 'between:1,12',
     'email' => 'email|unique:users|max:35',
@@ -46,10 +46,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     'password' => 'required|between:8,20',
     'mobile_os' => 'in:android,ios',
     'lang_id' => 'in:1,2',
-    'country_id'=>'required',
-    'city_id'=>'required',
     'gender_id'=>'required',
-    'region_id'=>'required'
+    // 'country_id'=>'required',
+    // 'city_id'=>'required',
+    // 'region_id'=>'required',
     ];
 
         // Relationships
@@ -81,7 +81,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->belongsToMany('App\Event', 'user_going');
     }
-    
+
 
     public function  events(){
         return $this->hasMany('App\Event','created_by');
@@ -102,7 +102,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $this->attributes['birthdate'] = gmdate("Y-m-d\TH:i:s\Z",$value);
         }else{
 
-          return Helpers::Get_Response(403, 'error', trans('Invalid date format'), [], []);   
+          return Helpers::Get_Response(403, 'error', trans('Invalid date format'), [], []);
         }
     }
 }
