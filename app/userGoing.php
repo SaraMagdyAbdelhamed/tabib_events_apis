@@ -4,7 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class userGoing extends Model {
 
-    protected $table='users_going';
+    protected $table='user_going';
     protected $fillable = ['user_id','event_id','is_accepted'];
 
     protected $dates = [];

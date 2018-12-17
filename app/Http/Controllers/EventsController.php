@@ -7,6 +7,8 @@ use App\Libraries\Helpers;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\userGoing;
+use Carbon\Carbon;
 
 class EventsController extends Controller
 {
@@ -44,7 +46,7 @@ class EventsController extends Controller
                 ->get();
             $going = Event::UserGoingThisEvent($user->id);
             // dd($going);
-            if (count($going) != 0) {
+            if ($going != null) {
                 $is_going = 1;
             } else {
                 $is_going = 0;
@@ -481,10 +483,36 @@ class EventsController extends Controller
     public function request_event(Request $request)
     {
         $user = User::where('api_token', '=', $request->header('access-token'))->first();
-        $request = EventJoinRequest::create([
-            'user_id' => $user->id,
-            'event_id' => $request->event_id,
-        ]);
+
+        $requestJoin = EventJoinRequest::where('user_id', $user->id)->where('event_id', $request->event_id);
+        $isGoing     = userGoing::where('user_id', $user->id)->where('event_id', $request->event_id);
+
+
+        if ( $requestJoin->first() == null ) {
+            $request = EventJoinRequest::create([
+                'user_id' => $user->id,
+                'event_id' => $request->event_id,
+                'is_accepted' => 1,
+                'is_accepted_update' => Carbon::now()
+            ]);
+        } else {
+            $requestJoin->delete();
+        }
+
+
+        if ( $isGoing->first() == null ) {
+            $going = userGoing::create([
+                'user_id' => $user->id,
+                'event_id' => $request->event_id,
+                'is_accepted' => 1,
+                'is_accepted_update' => Carbon::now()
+            ]);
+        } else {
+            $isGoing->delete();
+            $request = [
+                'Going to this event has been canceled!'
+            ];
+        }
 
         return Helpers::Get_Response(200, 'success', '', [], $request);
     }
