@@ -268,7 +268,9 @@ class UsersController extends Controller
             //dd($mail);
 
         }
-        return Helpers::Get_Response(200, 'success', '', $validator->errors(), array($user_array));
+        $user_array = User::where("api_token", "=", $api_token)->with('user_info')->first();
+
+        return Helpers::Get_Response(200, 'success', '', $validator->errors(), $user_array);
     }
 
     public function change_password(Request $request)
@@ -565,8 +567,8 @@ class UsersController extends Controller
                 $sms_mobile = $user->tele_code . '' . $user->mobile;
                 $sms_body = trans('messages.your_verification_code_is') . $mobile_verification_code;
                 $user_date = date('Y-m-d', strtotime($user->verification_date));
-                if ($user->is_mobile_verification_code_expired != 1 && $user->verification_count < 5) {
 
+                if ($user->is_mobile_verification_code_expired != 1 && $user->verification_count < 5) {
                     //send verification code via Email , sms
                     //increase verification count by 1
                     $user->verification_date = Carbon::now()->format('Y-m-d');
@@ -646,6 +648,30 @@ class UsersController extends Controller
                     // $user_array->photo = $base_url.$user_array->photo;
                     return Helpers::Get_Response(200, 'success', 'Verification code has been resend succesfully', $validator->errors(), array($user_array));
 
+                } else {
+                    //send verification code via Email , sms
+                    //increase verification count by 1
+                    $user->verification_date = Carbon::now()->format('Y-m-d');
+                    //$mobile_verification_code =str_random(4);
+                    $user->is_mobile_verified = 0;
+                    $user->mobile_verification_code = $mobile_verification_code;
+                    $user->verification_count = $user->verification_count + 1;
+                    if ($user->save()) {
+                        //send verification code via Email , sms
+                        $status = $twilio->send($sms_mobile, $sms_body);
+                        // print_r($status);
+                        // return;
+                        // $mail=Helpers::mail($user->email,$user->username,$mobile_verification_code);
+                    }
+                    $user_array = User::where('mobile', $request['mobile'])->where('tele_code', $request['tele_code'])->first();
+                    // $base_url = 'http://eventakom.com/eventakom_dev/public/';
+                    // $user_array->photo = $base_url.$user_array->photo;
+
+                    if ($user_array == null) {
+                        return Helpers::Get_Response(400, 'error', trans('messages.mobile_number_not_registered'), $validator->errors(), []);
+                    }
+
+                    return Helpers::Get_Response(200, 'success', 'Verification code has been resend succesfully', $validator->errors(), array($user_array));
                 }
             }
         }
