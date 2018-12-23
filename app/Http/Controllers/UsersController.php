@@ -170,6 +170,7 @@ class UsersController extends Controller
 
         $user = User::where("api_token", "=", $api_token)->first();
         // dd($request);
+        $email_valid='';
         if (array_key_exists('email', $request)) {
             if ($user->email == $request['email']) {
                 $email_valid = 'email|max:35';
