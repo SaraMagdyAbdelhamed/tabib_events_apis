@@ -232,3 +232,5 @@ $router->delete('fixed-page/{id}', 'FixedPagesController@remove');
 // $app->post('survey', 'SurveysController@add');
 // $app->put('survey/{id}', 'SurveysController@put');
 // $app->delete('survey/{id}', 'SurveysController@remove');
+
+$router->post('getUserEventsSurveys', 'EventsController@getUserEventsSurveys');

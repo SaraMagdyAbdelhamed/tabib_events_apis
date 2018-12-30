@@ -517,4 +517,47 @@ class EventsController extends Controller
         return Helpers::Get_Response(200, 'success', '', [], $request);
     }
 
+      public function getUserEventsSurveys(Request $request, $type = null)
+    {
+        // read the request
+        $request_data = (array) json_decode($request->getContent(), true);
+        if (array_key_exists('lang_id', $request_data)) {
+            Helpers::Set_locale($request_data['lang_id']);
+        }
+        //Validate
+        // $validator = Validator::make($request_data,
+        //     [
+        //         "category_id" => "required",
+
+        //     ]);
+        // if ($validator->fails()) {
+        //     return Helpers::Get_Response(403, 'error', trans('validation.required'), $validator->errors(), []);
+        // }
+
+        if ($request->header('access-token')) {
+            $user = User::where('api_token', '=', $request->header('access-token'))->first();
+
+            if (!$user) {
+                return Helpers::Get_Response(403, 'error', trans('messages.worng_token'), [], []);
+
+            }
+            //  get all events
+            // related to this user
+        //$user = User::where('api_token', '=', $request->header('access-token'))->first();
+            $user_events = $user->GoingEvents()->get();
+          // dd($users_events);
+          
+          //   foreach($user->GoingEvents() as $key => $event){
+          //   $result[$key] = array(
+          //       "id"=>$event->id,
+          //       "name"=>$event->name
+          //   );
+          // }
+        if (count($user_events) == 0) {
+            return Helpers::Get_Response(204, 'No Content', trans('messages.noevents'), '', $user_events);
+        }
+        return Helpers::Get_Response(200, 'success', '', '', $user_events);
+
+    }
+}
 }
