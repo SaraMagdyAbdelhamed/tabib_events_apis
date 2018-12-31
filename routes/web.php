@@ -133,6 +133,7 @@ $router->group(['prefix' => 'api', 'middleware' => 'EventakomAuth'], function ()
 
     //survey
     $router->post('survey_answer', 'SurveysController@add');
+    $router->post('getUserEventsSurveys', 'EventsController@getUserEventsSurveys');
     //users routes
     $router->post('logout', 'UsersController@logout');
     $router->post('change_lang', 'UsersController@change_lang');
@@ -233,4 +234,3 @@ $router->delete('fixed-page/{id}', 'FixedPagesController@remove');
 // $app->put('survey/{id}', 'SurveysController@put');
 // $app->delete('survey/{id}', 'SurveysController@remove');
 
-$router->post('getUserEventsSurveys', 'EventsController@getUserEventsSurveys');
