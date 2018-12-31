@@ -54,6 +54,10 @@ class Event extends Model {
     {
         return $this->belongsToMany('App\Category','event_categories','event_id','category_id');
     }
+
+     public  function surveys(){
+        return $this->hasMany('App\Survey','event_id');
+    }
     /** End Relations Section */
 
     /**  Localizations Through accessors */

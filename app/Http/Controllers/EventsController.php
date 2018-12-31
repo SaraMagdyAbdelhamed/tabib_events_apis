@@ -524,35 +524,33 @@ class EventsController extends Controller
         if (array_key_exists('lang_id', $request_data)) {
             Helpers::Set_locale($request_data['lang_id']);
         }
-        //Validate
-        // $validator = Validator::make($request_data,
-        //     [
-        //         "category_id" => "required",
-
-        //     ]);
-        // if ($validator->fails()) {
-        //     return Helpers::Get_Response(403, 'error', trans('validation.required'), $validator->errors(), []);
-        // }
 
         if ($request->header('access-token')) {
             $user = User::where('api_token', '=', $request->header('access-token'))->first();
 
-            if (!$user) {
-                return Helpers::Get_Response(403, 'error', trans('messages.worng_token'), [], []);
+        if (!$user) {
+             return Helpers::Get_Response(403, 'error', trans('messages.worng_token'), [], []);
 
             }
             //  get all events
-            // related to this user
-        //$user = User::where('api_token', '=', $request->header('access-token'))->first();
+            // related to this user;
             $user_events = $user->GoingEvents()->get();
-          // dd($users_events);
-          
-          //   foreach($user->GoingEvents() as $key => $event){
-          //   $result[$key] = array(
-          //       "id"=>$event->id,
-          //       "name"=>$event->name
-          //   );
-          // }
+            
+            foreach($user_events as $key => $event){
+            $surveys= $event->surveys()->get();  
+            foreach($surveys as $surv_key=>$survey){
+                $event_surveys[$surv_key] = array(
+                "id"=>$survey->firebase_id,
+                "name"=>$survey->name
+                );
+            }  
+            $result[$key] = array(
+                "id"=>$event->id,
+                "name"=>$event->name,
+                "surveys"=>$event_surveys
+            );
+          }
+          $user_events = $result;
         if (count($user_events) == 0) {
             return Helpers::Get_Response(204, 'No Content', trans('messages.noevents'), '', $user_events);
         }
