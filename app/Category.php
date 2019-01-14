@@ -17,5 +17,13 @@ class Category extends Model {
     {
         return $this->belongsToMany('App\Event','event_categories');
     }
+    //Attributes
+
+     public function getImageAttribute($value)
+    {
+        $base_url = ENV('FOLDER');
+        $photo = $base_url.$value;
+        return $photo;
+    }
 
 }
