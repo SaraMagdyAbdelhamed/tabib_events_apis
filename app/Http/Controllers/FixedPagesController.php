@@ -15,8 +15,8 @@ class FixedPagesController extends Controller {
 
         if ($pages) {
                 foreach($pages as $page){
-        $page->body = strip_tags($page->body);
-        $page->body =Helpers::CleanStriptagText($page->body);
+       // $page->body = strip_tags($page->body);
+        $page->body =Helpers::ParseHTML($page->body);
                     if( $lang_id == 1){
          $page->name =  $page->name;
          $page->body =  $page->body;

@@ -149,5 +149,17 @@ public static function localization($table_name, $field_name, $item_id, $lang_id
               return $text;
     }
 
+     public static function ParseHTML($text){
+
+                // $text = html_entity_decode($text);
+                // $text = strip_tags($text);
+                $text=  htmlspecialchars_decode($text);
+                $text = str_replace('&nbsp;', '', $text);
+                $text = str_replace('&quot;', '', $text);
+                $text = str_replace('RTL', '', $text);
+                $text = trim(preg_replace('/\s+/', ' ', $text));
+                return $text;
+      }
+
     
 }
