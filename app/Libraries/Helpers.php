@@ -26,11 +26,11 @@ class Helpers
 
   public static function Set_locale($locale)
   {
-    if($locale == 1)
+    if($locale == 2)
       {
         app('translator')->setLocale('ar');
       }
-     else  if($locale == 2)
+     else  if($locale == 1)
       {
         app('translator')->setLocale('en');
       }
