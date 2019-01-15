@@ -258,6 +258,7 @@ class UsersController extends Controller
         $user_update = $user->update($input);
         if($user_update){
          $userInfo['is_profile_completed']=1;
+         
          //$userInfo['allow_push_notification']=1;
           $user_info = userInfo::where("user_id",$user->id)->first();
           //dd($userInfo);
