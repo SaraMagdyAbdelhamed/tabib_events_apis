@@ -40,7 +40,7 @@ class UsersController extends Controller
         $validator = Validator::make($request, $user::$rules);
 
         if ($validator->fails()) {
-            return Helpers::Get_Response(403, 'error', trans('validation.required'), $validator->errors(), []);
+            return Helpers::Get_Response(403, 'error', trans('messages.required_fields'), $validator->errors(), []);
         }
 
         if (array_key_exists('photo', $request)) {
