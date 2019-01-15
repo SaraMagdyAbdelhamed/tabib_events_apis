@@ -39,7 +39,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     [
     'first_name' => 'between:1,100',
     'last_name' => 'between:1,12',
-    'email' => 'email|unique:users|max:35',
+    'email' => 'required|email|unique:users|max:35',
     'mobile' => 'required|numeric|unique:users',
     'tele_code'=>'required',
     'password' => 'required|between:8,20',

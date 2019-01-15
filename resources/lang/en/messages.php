@@ -11,7 +11,7 @@ return [
 	'wrong_verification_code'=>'Invalid Activation code',
 	'password_less'=> 'Please enter password numbers morethan 6',
 	'not_matching_password'=> 'Passwords not matched ',
-	'required_fields' => 'Please enter all required fields',
+	'required_fields' => 'Please enter all required fields correctly',
 	'mobile_exist' => 'this mobile number already exist',
 	'active'=>'you are in active',
 	'Unauthorised'=>'you are Unauthorised',
