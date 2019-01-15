@@ -813,7 +813,7 @@ class UsersController extends Controller
     {
         $Users = User::whereHas('sponsors_categories', function ($q) use ($sponsor_id) {
             $q->where('sponsor_category_id', $sponsor_id);
-        })->with('sponsors_categories')->where('deleted_at','=', null)->get();
+        })->with('user_info')->with('sponsors_categories')->where('deleted_at','=', null)->get();
         return Helpers::Get_Response(200, 'success', '', [], $Users);
     }
 }

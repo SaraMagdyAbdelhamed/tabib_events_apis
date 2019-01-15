@@ -13,12 +13,12 @@ class SponsorCategoriesController extends Controller {
         if($cat_id == 0 )
         {
     return Helpers::Get_Response(200,'success','',[],SponsorCategory::with(['sponsors' => function ($query) {
-            $query->where('deleted_at', '=', null);
+            $query->with('user_info')->where('deleted_at', '=', null);
             }])->get());
 
         }
        return Helpers::Get_Response(200,'success','',[],SponsorCategory::where('id',$cat_id)->with(['sponsors' => function ($query) {
-            $query->where('deleted_at', '=', null);
+            $query->with('user_info')->where('deleted_at', '=', null);
             }])->get());
     }
 
