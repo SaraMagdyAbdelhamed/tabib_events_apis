@@ -94,14 +94,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
 
-     public function setBirthDateAttribute($value)
-    {
-        if(Helpers::isValidTimestamp($value))
-        {
-        $this->attributes['birthdate'] = gmdate("Y-m-d\TH:i:s\Z",$value);
-        }else{
+    //  public function setBirthDateAttribute($value)
+    // {
+    //     if(Helpers::isValidTimestamp($value))
+    //     {
+    //     $this->attributes['birthdate'] = gmdate("Y-m-d\TH:i:s\Z",$value);
+    //     }else{
 
-          return Helpers::Get_Response(403, 'error', trans('Invalid date format'), [], []);
-        }
-    }
+    //       return Helpers::Get_Response(403, 'error', trans('Invalid date format'), [], []);
+    //     }
+    // }
 }

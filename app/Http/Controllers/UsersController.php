@@ -217,6 +217,7 @@ class UsersController extends Controller
           $request['birthdate']=date('Y-m-d',strtotime($request['birthdate']));
         }
         $input = $request;
+        //dd($input);
         /*id username  password  first_name  last_name email tele_code mobile  country_id  city_id gender_id photo birthdate is_active created_by  updated_by  created_at  updated_at  device_token  mobile_os is_social access_token  social_token  lang_id mobile_verification_code is_mobile_verification_code_expired  last_login  api_token longtuide latitude*/
         // if (Hash::check($request['password'], $user->password)) {
         //     $input['password'] = $user->password;
