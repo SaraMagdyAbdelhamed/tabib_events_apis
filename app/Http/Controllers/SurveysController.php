@@ -9,6 +9,7 @@
     use App\SurveyQuestionAnswer;
     use App\SurveyAnswerUser;
     use App\User;
+    use App\surveyUser;
 class SurveysController extends Controller {
 
     // const MODEL = "App\Survey";
@@ -110,6 +111,18 @@ class SurveysController extends Controller {
     //  dd($questions);
 
       return Helpers::Get_Response(200,'success','',[],$data1);
+    }
+
+
+    public function survey_users(Request $request)
+    {
+        $request = (array)json_decode($request->getContent(), true);
+        $survey = surveyUser::create([
+            "answer_id"=>$request['survey_id'],
+             "user_id"=>$request['user_id']
+        ]);
+
+        return Helpers::Get_Response(200,'success','',[],$survey);
     }
 
 

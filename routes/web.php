@@ -133,6 +133,7 @@ $router->group(['prefix' => 'api', 'middleware' => 'EventakomAuth'], function ()
 
     //survey
     $router->post('survey_answer', 'SurveysController@add');
+    $router->post('survey_users', 'SurveysController@survey_users');
     $router->post('getUserEventsSurveys', 'EventsController@getUserEventsSurveys');
     //users routes
     $router->post('logout', 'UsersController@logout');
