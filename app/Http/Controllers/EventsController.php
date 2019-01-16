@@ -521,8 +521,12 @@ class EventsController extends Controller
                 'is_accepted' => 1,
                 'is_accepted_update' => Carbon::now()
             ]);
+            $event = Event::find($request->event_id);
+            $event->update(['is_going'=>1]);
         } else {
             $isGoing->delete();
+            $event = Event::find($request->event_id);
+            $event->update(['is_going'=>0]);
             $request = [
                 'Going to this event has been canceled!'
             ];
