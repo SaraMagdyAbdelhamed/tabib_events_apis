@@ -277,6 +277,17 @@ class EventsController extends Controller
         if (array_key_exists('lang_id', $request_data)) {
             Helpers::Set_locale($request_data['lang_id']);
         }
+
+            //add category_id
+        if (array_key_exists('category_id', $request_data)) {
+        $category_id = $request_data['category_id'];
+        $category = Category::find($category_id);
+       if (!$category) {
+            return Helpers::Get_Response(403, 'error', trans('messages.category_not_found'), [], []);
+        }
+        }else{
+             return Helpers::Get_Response(403, 'error', trans('messages.category_required'), [], []);
+        }
         $page = array_key_exists('page', $request_data) ? $request_data['page'] : 1;
         $limit = array_key_exists('limit', $request_data) ? $request_data['limit'] : 10;
 
@@ -287,8 +298,9 @@ class EventsController extends Controller
                 return Helpers::Get_Response(403, 'error', trans('messages.worng_token'), [], []);
 
             }
+
             //this Month Events
-            $this_month_by_user = Event::query()
+            $this_month_by_user = $category->events()
                 ->with('EventCategory', 'media')
                 ->CreatedByUser($user)
                 ->ShowInMobile()
@@ -296,7 +308,7 @@ class EventsController extends Controller
                 ->WithPaginate($page, $limit)
                 ->orderBy('end_datetime', 'DESC')
                 ->get();
-            $this_month_not_by_user = Event::query()
+            $this_month_not_by_user = $category->events()
                 ->with('EventCategory', 'media')
                 ->NotCreatedByUser($user)
                 ->ShowInMobile()
@@ -307,7 +319,7 @@ class EventsController extends Controller
             $this_month = array_merge($this_month_by_user->toArray(), $this_month_not_by_user->toArray());
 
             //Next Events
-            $next_month_by_user = Event::query()
+            $next_month_by_user = $category->events()
                 ->with('EventCategory', 'media')
                 ->CreatedByUser($user)
                 ->ShowInMobile()
@@ -315,7 +327,7 @@ class EventsController extends Controller
                 ->WithPaginate($page, $limit)
                 ->orderBy('end_datetime', 'DESC')
                 ->get();
-            $next_month_not_by_user = Event::query()
+            $next_month_not_by_user = $category->events()
                 ->with('EventCategory', 'media')
                 ->NotCreatedByUser($user)
                 ->ShowInMobile()
@@ -324,7 +336,7 @@ class EventsController extends Controller
                 ->orderBy('end_datetime', 'DESC')
                 ->get();
             $next_month = array_merge($next_month_by_user->toArray(), $next_month_not_by_user->toArray());
-            $start_to_today_by_user = Event::query()
+            $start_to_today_by_user = $category->events()
                 ->with('EventCategory', 'media')
                 ->CreatedByUser($user)
                 ->ShowInMobile()
@@ -332,7 +344,7 @@ class EventsController extends Controller
                 ->WithPaginate($page, $limit)
                 ->orderBy('end_datetime', 'DESC')
                 ->get();
-            $start_to_today_not_by_user = Event::query()
+            $start_to_today_not_by_user = $category->events()
                 ->with('EventCategory', 'media')
                 ->NotCreatedByUser($user)
                 ->ShowInMobile()
@@ -351,7 +363,9 @@ class EventsController extends Controller
             return Helpers::Get_Response(200, 'success', '', [], $result);
 
         } else {
-            $this_month = Event::query()
+
+                     
+            $this_month = $category->events()
                 ->with('EventCategory', 'media')
                 ->IsActive()
                 ->ShowInMobile()
@@ -359,7 +373,7 @@ class EventsController extends Controller
                 ->WithPaginate($page, $limit)
                 ->orderBy('end_datetime', 'DESC')
                 ->get();
-            $next_month = Event::query()
+            $next_month = $category->events()
                 ->with('EventCategory', 'media')
                 ->IsActive()
                 ->ShowInMobile()
@@ -367,7 +381,7 @@ class EventsController extends Controller
                 ->WithPaginate($page, $limit)
                 ->orderBy('end_datetime', 'DESC')
                 ->get();
-            $start_to_today = Event::query()
+            $start_to_today = $category->events()
                 ->with('EventCategory', 'media')
                 ->IsActive()
                 ->ShowInMobile()
