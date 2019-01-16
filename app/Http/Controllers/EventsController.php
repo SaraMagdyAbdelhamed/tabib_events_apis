@@ -562,6 +562,7 @@ class EventsController extends Controller
             foreach($surveys as $surv_key=>$survey){
                 $users_surveys=$user->SurveyUsers()->get();
                 $is_answered=0;
+                dd($users_surveys);
                 foreach($users_surveys as $user_key => $user_survey)
                 {
                     if($user_survey['survey_id'] == $survey->id)
