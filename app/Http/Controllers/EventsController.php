@@ -558,35 +558,40 @@ class EventsController extends Controller
            // $user_events = [];
             // dd($user_events);
             foreach($user_events as $key => $event){
-            $surveys= $event->surveys()->get();
-                
-            foreach($surveys as $surv_key=>$survey){
-                $users_surveys=$user->SurveyUsers()->get();
-                $is_answered=0;
-                // dd($users_surveys);
-                foreach($users_surveys as $user_key => $user_survey)
+                if($event->end_datetime > Carbon::now())
                 {
-                    // dd($user_survey->survey_id .'----'  .$survey->id );
-                    if($user_survey->id == $survey->id)
-                    {
-                       
-                        $is_answered =1 ;
-                        break 1;
-                    }
+                    $surveys= $event->surveys()->get();
+                
+                    foreach($surveys as $surv_key=>$survey){
+                        $users_surveys=$user->SurveyUsers()->get();
+                        $is_answered=0;
+                        // dd($users_surveys);
+                        foreach($users_surveys as $user_key => $user_survey)
+                        {
+                            // dd($user_survey->survey_id .'----'  .$survey->id );
+                            if($user_survey->id == $survey->id)
+                            {
+                               
+                                $is_answered =1 ;
+                                break 1;
+                            }
+        
+                        }
+                        $event_surveys[$surv_key] = array(
+                        "id"=>$survey->firebase_id,
+                        "name"=>$survey->name,
+                        "survey_id"=>$survey->id,
+                        "is_answered"=>$is_answered,
+                        );
+                    }  
+                    $result[$key] = array(
+                        "id"=>$event->id,
+                        "name"=>$event->name,
+                        "surveys"=>$event_surveys
+                    );
 
                 }
-                $event_surveys[$surv_key] = array(
-                "id"=>$survey->firebase_id,
-                "name"=>$survey->name,
-                "survey_id"=>$survey->id,
-                "is_answered"=>$is_answered,
-                );
-            }  
-            $result[$key] = array(
-                "id"=>$event->id,
-                "name"=>$event->name,
-                "surveys"=>$event_surveys
-            );
+         
           }
           $user_events = $result;
         if (count($user_events) == 0) {
