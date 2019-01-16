@@ -52,6 +52,7 @@ class SurveysController extends Controller {
         $surveys=[];
         foreach($newPost as $survey)
         {
+            // dd($newPost);
             if($survey['parent_id'] ==  $request['event_id'])
             {
                 $surveys[]=$survey;
