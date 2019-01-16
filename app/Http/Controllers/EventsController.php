@@ -44,7 +44,7 @@ class EventsController extends Controller
                 ->with('EventCategory', 'media')
                 ->withCount('GoingUsers')
                 ->get();
-            $going = Event::UserGoingThisEvent($user->id);
+            $going = Event::UserGoingThisEvent($user->id , $event->id);
             // dd($going);
             if ($going != null && count($going) > 0 ) {
                 $is_going = 1;
