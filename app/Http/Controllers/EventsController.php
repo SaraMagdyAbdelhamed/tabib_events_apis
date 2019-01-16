@@ -46,7 +46,7 @@ class EventsController extends Controller
                 ->get();
             $going = Event::UserGoingThisEvent($user->id);
             // dd($going);
-            if ($going != null) {
+            if ($going != null && count($going) > 0 ) {
                 $is_going = 1;
             } else {
                 $is_going = 0;
