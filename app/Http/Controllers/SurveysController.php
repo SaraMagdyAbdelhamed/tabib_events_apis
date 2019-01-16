@@ -119,7 +119,7 @@ class SurveysController extends Controller {
     {
         $request = (array)json_decode($request->getContent(), true);
         $survey = surveyUser::create([
-            "answer_id"=>$request['survey_id'],
+            "survey_id"=>$request['survey_id'],
              "user_id"=>$request['user_id']
         ]);
 
