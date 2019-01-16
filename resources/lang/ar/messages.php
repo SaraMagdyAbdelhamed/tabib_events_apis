@@ -11,7 +11,7 @@ return [
 	'wrong_verification_code'=>'رمز التفعيل غير صحيح',
 	'password_less'=> 'لابد من ادخال عدد لا يقل عن 6 حروف لكلمة المرور',
 	'not_matching_password'=> 'برجاء التحقق من كلمة المرور فهم غير متماثلين',
-	'required_fields' => 'Please enter all required fields',
+	'required_fields' => 'من فضلك ادخل كل الحقول المطلوبه بشكل صحيح',
 	'mobile_exist' => 'الرقم مسجل من قبل',
 	'active'=>'هذا الرقم غير مفعل',
 	'Unauthorised'=>'هذا المستخدم غير مرخص ',
