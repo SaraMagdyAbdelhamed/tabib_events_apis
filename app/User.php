@@ -78,7 +78,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
     public function GoingEvents()
     {
-        return $this->belongsToMany('App\Event', 'user_going');
+        return $this->belongsToMany('App\Event', 'user_going','user_id','event_id');
     }
 
 
