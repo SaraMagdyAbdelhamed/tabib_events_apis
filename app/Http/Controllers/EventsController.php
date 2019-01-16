@@ -560,9 +560,22 @@ class EventsController extends Controller
             $surveys= $event->surveys()->get();
                 
             foreach($surveys as $surv_key=>$survey){
+                $users_surveys=$user->SurveyUsers()->get();
+                $is_answered=0;
+                foreach($users_surveys as $user_key => $user_survey)
+                {
+                    if($user_survey['survey_id'] == $survey->id)
+                    {
+                        $is_answered =1 ;
+                        exit;
+                    }
+
+                }
                 $event_surveys[$surv_key] = array(
                 "id"=>$survey->firebase_id,
-                "name"=>$survey->name
+                "name"=>$survey->name,
+                "survey_id"=>$survey->id,
+                "is_answered"=>$is_answered,
                 );
             }  
             $result[$key] = array(

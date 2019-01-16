@@ -80,6 +80,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->belongsToMany('App\Event', 'user_going','user_id','event_id');
     }
+    public function SurveyUsers()
+    {
+        return $this->belongsToMany('App\Survey', 'survey_users','user_id','survey_id');
+    }
 
 
     public function  events(){

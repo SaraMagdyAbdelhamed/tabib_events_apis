@@ -13,5 +13,9 @@ class Survey extends Model {
     ];
 
     // Relationships
+    public function SurveyUsers()
+    {
+        return $this->belongsToMany('App\User', 'survey_users','survey_id','user_id');
+    }
 
 }
