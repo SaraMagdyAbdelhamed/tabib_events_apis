@@ -95,7 +95,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
 
      public function setBirthDateAttribute($value)
-    {
+    { // dd($value);
         if(Helpers::isValidTimestamp($value))
         {
         $this->attributes['birthdate'] = gmdate("Y-m-d\TH:i:s\Z",$value);
