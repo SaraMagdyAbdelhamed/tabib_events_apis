@@ -567,6 +567,7 @@ class EventsController extends Controller
                 {
                     if($user_survey->survey_id == $survey->id)
                     {
+                        dd($user_survey->survey_id .'----'  .$survey->id );
                         $is_answered =1 ;
                         break 1;
                     }
