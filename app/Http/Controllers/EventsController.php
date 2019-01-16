@@ -553,9 +553,11 @@ class EventsController extends Controller
             //  get all events
             // related to this user;
             $user_events = $user->GoingEvents()->get();
-            
+            $result = [];
+            $user_events = [];
             foreach($user_events as $key => $event){
-            $surveys= $event->surveys()->get();  
+            $surveys= $event->surveys()->get();
+
             foreach($surveys as $surv_key=>$survey){
                 $event_surveys[$surv_key] = array(
                 "id"=>$survey->firebase_id,
