@@ -560,7 +560,7 @@ class EventsController extends Controller
             // dd($user_events);
             $i=0;
             foreach($user_events as $key => $event){
-                if($event->end_datetime->toDateString() >= Carbon::now()->toDateString())
+                if($event->end_datetime >= Carbon::now()->toDateString())
                 {
                     $surveys= $event->surveys()->get();
                 
