@@ -597,13 +597,13 @@ class EventsController extends Controller
           }
           foreach($result as $arr)
           {
-              $user_events[]=$arr;
+              $users_events[]=$arr;
           }
         //   $user_events = $result;
-        if (count($user_events) == 0) {
-            return Helpers::Get_Response(204, 'No Content', trans('messages.noevents'), '', $user_events);
+        if (count($users_events) == 0) {
+            return Helpers::Get_Response(204, 'No Content', trans('messages.noevents'), '', $users_events);
         }
-        return Helpers::Get_Response(200, 'success', '', '', $user_events);
+        return Helpers::Get_Response(200, 'success', '', '', $users_events);
 
     }
 }
