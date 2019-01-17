@@ -555,6 +555,7 @@ class EventsController extends Controller
             // related to this user;
             $user_events = $user->GoingEvents()->get();
             $result = [];
+            $event_surveys=[];
            // $user_events = [];
             // dd($user_events);
             $i=0;
