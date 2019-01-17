@@ -595,7 +595,7 @@ class EventsController extends Controller
                 }
          
           }
-          $user_events = $result->toArray();
+          $user_events = $result;
         if (count($user_events) == 0) {
             return Helpers::Get_Response(204, 'No Content', trans('messages.noevents'), '', $user_events);
         }
