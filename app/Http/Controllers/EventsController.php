@@ -557,6 +557,7 @@ class EventsController extends Controller
             $result = [];
            // $user_events = [];
             // dd($user_events);
+            $i=0;
             foreach($user_events as $key => $event){
                 if($event->end_datetime > Carbon::now())
                 {
@@ -584,11 +585,12 @@ class EventsController extends Controller
                         "is_answered"=>$is_answered,
                         );
                     }  
-                    $result[$key] = array(
+                    $result[$i] = array(
                         "id"=>$event->id,
                         "name"=>$event->name,
                         "surveys"=>$event_surveys
                     );
+                    $i++;
 
                 }
          
