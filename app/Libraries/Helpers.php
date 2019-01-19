@@ -169,6 +169,7 @@ public static function localization($table_name, $field_name, $item_id, $lang_id
         $entity = Entity::where('table_name', $entity_name)->first();
         $notification = Notification::create([
           "msg"=>$notification_type->msg,
+          "msg_ar"=>$notification_type->msg_ar,
           "user_id"=>$user_id,
           "entity_id"=> $entity->id,
           "item_id"=>$item_id,

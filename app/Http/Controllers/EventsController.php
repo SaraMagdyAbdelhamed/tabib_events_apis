@@ -497,7 +497,10 @@ class EventsController extends Controller
 
     public function request_event(Request $request)
     {
-        $user = User::where('api_token', '=', $request->header('access-token'))->first();
+        $event= Event::find($request->event_id);
+        if($event)
+        {
+            $user = User::where('api_token', '=', $request->header('access-token'))->first();
 
         $requestJoin = EventJoinRequest::where('user_id', $user->id)->where('event_id', $request->event_id);
         $isGoing     = userGoing::where('user_id', $user->id)->where('event_id', $request->event_id);
@@ -534,6 +537,12 @@ class EventsController extends Controller
                 'Going to this event has been canceled!'
             ];
         }
+        }
+        else
+        {
+            return Helpers::Get_Response(400, 'error', 'Not event', [], []);  
+        }
+        
 
         return Helpers::Get_Response(200, 'success', '', [], $request);
     }
