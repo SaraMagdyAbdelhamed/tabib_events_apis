@@ -166,7 +166,7 @@ public static function localization($table_name, $field_name, $item_id, $lang_id
       public static function notification($user_id , $entity_name , $item_id , $notification_type_id)
       {
         $notification_type = Notification_Types::find($notification_type_id);
-        $entity = Entity::where('name', $entity_name)->first();
+        $entity = Entity::where('table_name', $entity_name)->first();
         $notification = Notification::create([
           "msg"=>$notification_type->msg,
           "user_id"=>$user_id,
