@@ -112,7 +112,7 @@ class UsersController extends Controller
             //dd($mail);
 
         }
-        $notify = Helpers::notification($user->id , "users" , $user->id , 3);
+        $notify = Helpers::notification($user->id , "users" , $user->id , 7);
         return Helpers::Get_Response(200, 'success', '', $validator->errors(), array($user_array));
     }
 
