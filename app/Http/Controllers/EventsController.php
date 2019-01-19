@@ -504,10 +504,11 @@ class EventsController extends Controller
 
 
         if ( $requestJoin->first() == null ) {
+            $notify = Helpers::notification($user->id , "events" , $request->event_id , 6);
             $request = EventJoinRequest::create([
                 'user_id' => $user->id,
                 'event_id' => $request->event_id,
-                'is_accepted' => 1,
+                'is_accepted' => 0,
                 'is_accepted_update' => Carbon::now()
             ]);
         } else {
@@ -516,10 +517,11 @@ class EventsController extends Controller
 
 
         if ( $isGoing->first() == null ) {
+            
             $going = userGoing::create([
                 'user_id' => $user->id,
                 'event_id' => $request->event_id,
-                'is_accepted' => 1,
+                'is_accepted' => 0 ,
                 'is_accepted_update' => Carbon::now()
             ]);
             $event = Event::find($request->event_id);

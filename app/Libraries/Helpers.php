@@ -5,6 +5,8 @@
 namespace App\Libraries;
 use App\Entity;
 use Illuminate\Support\Facades\Mail;
+use App\Notification;
+use App\Notification_Types;
 
 class Helpers
 {
@@ -159,6 +161,25 @@ public static function localization($table_name, $field_name, $item_id, $lang_id
                 $text = str_replace('RTL', '', $text);
                 $text = trim(preg_replace('/\s+/', ' ', $text));
                 return $text;
+      }
+
+      public static function notification($user_id , $entity_name , $item_id , $notification_type_id)
+      {
+        $notification_type = Notification_Types::find($notification_type_id);
+        $entity = Entitiy::where('name', $entity_name)->first();
+        $notification = Notification::create([
+          "msg"=>$notification_type->msg,
+          "user_id"=>$user_id,
+          "entity_id"=> $entity->id,
+          "item_id"=>$item_id,
+          'is_push'=>$notification_type->is_push,
+          "notification_type_id"=>$notification_type_id,
+          "is_read"=>0,
+          "is_sent"=>0
+  
+        ]);
+  
+        return self::Get_Response('200','success',"",[],(object)[]);
       }
 
     
