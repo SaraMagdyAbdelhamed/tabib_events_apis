@@ -6,13 +6,13 @@ class Notification extends Model {
 protected $table='notifications';
     protected $fillable = ['msg','user_id','entity_id','item_id','notification_type_id','is_read','is_sent','is_push','created_at'];
 
-    protected $dates = [];
+    protected $dates = ['created_at', 'updated_at','schedule'];
 
     public static $rules = [
         // Validation rules
     ];
 
-    public $timestamps=false;
+    public $timestamps=true;
     // Relationships
     public function notification_type()
     {
