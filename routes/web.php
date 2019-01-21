@@ -126,6 +126,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
 ///add_survey
     $router->post('survey', 'SurveysController@index');
+    $router->post('get_all_notifications', 'NotitficationsController@get_all_notifications');
 
 });
 
@@ -235,3 +236,14 @@ $router->delete('fixed-page/{id}', 'FixedPagesController@remove');
 // $app->put('survey/{id}', 'SurveysController@put');
 // $app->delete('survey/{id}', 'SurveysController@remove');
 
+
+
+
+/**
+ * Routes for resource notitfication
+ */
+$router->get('notitfication', 'NotitficationsController@all');
+$router->get('notitfication/{id}', 'NotitficationsController@get');
+$router->post('notitfication', 'NotitficationsController@add');
+$router->put('notitfication/{id}', 'NotitficationsController@put');
+$router->delete('notitfication/{id}', 'NotitficationsController@remove');
