@@ -14,10 +14,10 @@ class NotitficationsController extends Controller {
     use RESTActions;
 
     public function get_all_notifications(Request $request) {
-        $request = (array)json_decode($request->getContent(), true);
-        if(array_key_exists('lang_id',$request)) {
-            Helpers::Set_locale($request['lang_id']);
-        }  
+        // $request = (array)json_decode($request->getContent(), true);
+        // if(array_key_exists('lang_id',$request)) {
+        //     Helpers::Set_locale($request['lang_id']);
+        // }  
         if ($request->header('access-token')) {
             $user = User::where('api_token', '=', $request->header('access-token'))->first();
             if($user) {

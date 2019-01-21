@@ -126,7 +126,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
 ///add_survey
     $router->post('survey', 'SurveysController@index');
-    $router->post('get_all_notifications', 'NotitficationsController@get_all_notifications');
+    $router->get('get_all_notifications', 'NotitficationsController@get_all_notifications');
 
 });
 
