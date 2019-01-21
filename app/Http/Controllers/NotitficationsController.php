@@ -1,6 +1,11 @@
 <?php namespace App\Http\Controllers;
-use App\User;
+
 use App\Notification;
+use App\Libraries\Helpers;
+use App\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class NotitficationsController extends Controller {
 
