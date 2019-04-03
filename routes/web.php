@@ -44,6 +44,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->post("big_events[/{type}]", "EventsController@big_events");
     $router->post('current_month_events', "EventsController@current_month_events");
     $router->post('nearby_events', "EventsController@nearby_events");
+    $router->post('eventWorkshops', 'EventsController@eventWorkshops');
     /**
      * Routes for resource event
      */
@@ -136,7 +137,7 @@ $router->group(['prefix' => 'api', 'middleware' => 'EventakomAuth'], function ()
     $router->post('survey_answer', 'SurveysController@add');
     $router->post('survey_users', 'SurveysController@survey_users');
     $router->post('getUserEventsSurveys', 'EventsController@getUserEventsSurveys');
-    $router->post('eventWorkshops', 'EventsController@eventWorkshops');
+    
     //users routes
     $router->post('logout', 'UsersController@logout');
     $router->post('change_lang', 'UsersController@change_lang');

@@ -622,6 +622,7 @@ class EventsController extends Controller
 
     public function eventWorkshops(Request $request)
     {
+        $request_data = (array) json_decode($request->getContent(), true);
         if (array_key_exists('event_id', $request_data)) {
         $event_id = $request_data['event_id'];
         $event = Event::find($event_id);
