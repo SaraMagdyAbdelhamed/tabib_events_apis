@@ -58,6 +58,11 @@ class Event extends Model {
      public  function surveys(){
         return $this->hasMany('App\Survey','event_id');
     }
+
+    public function workshops()
+    {
+        return $this->hasMany('App\Workshop','event_id');
+    }
     /** End Relations Section */
 
     /**  Localizations Through accessors */

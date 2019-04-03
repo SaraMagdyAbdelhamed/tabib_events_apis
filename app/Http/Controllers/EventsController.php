@@ -100,19 +100,19 @@ class EventsController extends Controller
             Helpers::Set_locale($request_data['lang_id']);
         }
         //Validate
-        $validator = Validator::make($request_data,
-            [
-                "category_id" => "required",
+        // $validator = Validator::make($request_data,
+        //     [
+        //         "category_id" => "required",
 
-            ]);
-        if ($validator->fails()) {
-            return Helpers::Get_Response(403, 'error', trans('validation.required'), $validator->errors(), []);
-        }
+        //     ]);
+        // if ($validator->fails()) {
+        //     return Helpers::Get_Response(403, 'error', trans('validation.required'), $validator->errors(), []);
+        // }
 
-        $category = Category::find($request_data['category_id']);
-        if (!$category) {
-            return Helpers::Get_Response(403, 'error', trans('messages.category_not_found'), [], []);
-        }
+        // $category = Category::find($request_data['category_id']);
+        // if (!$category) {
+        //     return Helpers::Get_Response(403, 'error', trans('messages.category_not_found'), [], []);
+        // }
         if ($request->header('access-token')) {
             $user = User::where('api_token', '=', $request->header('access-token'))->first();
 
@@ -122,12 +122,12 @@ class EventsController extends Controller
             }
             // we want to get all events
             // related to this category - created by the login user
-            $users_events = $category->events()
-                ->with('EventCategory', 'media')
+            $users_events = Event::
+                with('EventCategory', 'media')
                 ->CreatedByUser($user)
                 ->ShowInMobile();
-            $non_users_events = $category->events()
-                ->with('EventCategory', 'media')
+            $non_users_events = Event::
+                with('EventCategory', 'media')
                 ->NotCreatedByUser($user)
                 ->ShowInMobile();
             // $data = $interest->events()
@@ -152,8 +152,8 @@ class EventsController extends Controller
             $limit = array_key_exists('limit', $request_data) ? $request_data['limit'] : 10;
             $result = array_merge($users_data->WithPaginate($page, $limit)->get()->toArray(), $not_user_data->WithPaginate($page, $limit)->get()->toArray());
         } else {
-            $events = $category->events()
-                ->with('EventCategory', 'media')
+            $events = Event::
+                with('EventCategory', 'media')
                 ->IsActive()
                 ->ShowInMobile();
             switch ($type) {
@@ -280,15 +280,15 @@ class EventsController extends Controller
         }
 
             //add category_id
-        if (array_key_exists('category_id', $request_data)) {
-        $category_id = $request_data['category_id'];
-        $category = Category::find($category_id);
-       if (!$category) {
-            return Helpers::Get_Response(403, 'error', trans('messages.category_not_found'), [], []);
-        }
-        }else{
-             return Helpers::Get_Response(403, 'error', trans('messages.category_required'), [], []);
-        }
+    //     if (array_key_exists('category_id', $request_data)) {
+    //     $category_id = $request_data['category_id'];
+    //     $category = Category::find($category_id);
+    //    if (!$category) {
+    //         return Helpers::Get_Response(403, 'error', trans('messages.category_not_found'), [], []);
+    //     }
+    //     }else{
+    //          return Helpers::Get_Response(403, 'error', trans('messages.category_required'), [], []);
+    //     }
         $page = array_key_exists('page', $request_data) ? $request_data['page'] : 1;
         $limit = array_key_exists('limit', $request_data) ? $request_data['limit'] : 10;
 
@@ -301,16 +301,16 @@ class EventsController extends Controller
             }
 
             //this Month Events
-            $this_month_by_user = $category->events()
-                ->with('EventCategory', 'media')
+            $this_month_by_user = Events::
+                with('EventCategory', 'media')
                 ->CreatedByUser($user)
                 ->ShowInMobile()
                 ->ThisMonthEvents()
                 ->WithPaginate($page, $limit)
                 ->orderBy('end_datetime', 'DESC')
                 ->get();
-            $this_month_not_by_user = $category->events()
-                ->with('EventCategory', 'media')
+            $this_month_not_by_user = Event::
+                with('EventCategory', 'media')
                 ->NotCreatedByUser($user)
                 ->ShowInMobile()
                 ->ThisMonthEvents()
@@ -320,16 +320,16 @@ class EventsController extends Controller
             $this_month = array_merge($this_month_by_user->toArray(), $this_month_not_by_user->toArray());
 
             //Next Events
-            $next_month_by_user = $category->events()
-                ->with('EventCategory', 'media')
+            $next_month_by_user = Event::
+                with('EventCategory', 'media')
                 ->CreatedByUser($user)
                 ->ShowInMobile()
                 ->NextMonthEvents()
                 ->WithPaginate($page, $limit)
                 ->orderBy('end_datetime', 'DESC')
                 ->get();
-            $next_month_not_by_user = $category->events()
-                ->with('EventCategory', 'media')
+            $next_month_not_by_user = Event::
+                with('EventCategory', 'media')
                 ->NotCreatedByUser($user)
                 ->ShowInMobile()
                 ->NextMonthEvents()
@@ -337,16 +337,16 @@ class EventsController extends Controller
                 ->orderBy('end_datetime', 'DESC')
                 ->get();
             $next_month = array_merge($next_month_by_user->toArray(), $next_month_not_by_user->toArray());
-            $start_to_today_by_user = $category->events()
-                ->with('EventCategory', 'media')
+            $start_to_today_by_user = Event::
+                with('EventCategory', 'media')
                 ->CreatedByUser($user)
                 ->ShowInMobile()
                 ->StartOfMothEvents()
                 ->WithPaginate($page, $limit)
                 ->orderBy('end_datetime', 'DESC')
                 ->get();
-            $start_to_today_not_by_user = $category->events()
-                ->with('EventCategory', 'media')
+            $start_to_today_not_by_user = Event::
+                with('EventCategory', 'media')
                 ->NotCreatedByUser($user)
                 ->ShowInMobile()
                 ->StartOfMothEvents()
@@ -366,24 +366,24 @@ class EventsController extends Controller
         } else {
 
                      
-            $this_month = $category->events()
-                ->with('EventCategory', 'media')
+            $this_month = Event::
+                with('EventCategory', 'media')
                 ->IsActive()
                 ->ShowInMobile()
                 ->ThisMonthEvents()
                 ->WithPaginate($page, $limit)
                 ->orderBy('end_datetime', 'DESC')
                 ->get();
-            $next_month = $category->events()
-                ->with('EventCategory', 'media')
+            $next_month = Event::
+                with('EventCategory', 'media')
                 ->IsActive()
                 ->ShowInMobile()
                 ->NextMonthEvents()
                 ->WithPaginate($page, $limit)
                 ->orderBy('end_datetime', 'DESC')
                 ->get();
-            $start_to_today = $category->events()
-                ->with('EventCategory', 'media')
+            $start_to_today = Event::
+                with('EventCategory', 'media')
                 ->IsActive()
                 ->ShowInMobile()
                 ->StartOfMothEvents()
@@ -617,6 +617,21 @@ class EventsController extends Controller
         }
         return Helpers::Get_Response(200, 'success', '', '', $users_events);
 
+     }
     }
-}
+
+    public function eventWorkshops(Request $request)
+    {
+        if (array_key_exists('event_id', $request_data)) {
+        $event_id = $request_data['event_id'];
+        $event = Event::find($event_id);
+        if (!$event) {
+            return Helpers::Get_Response(403, 'error', trans('messages.event_not_found'), [], []);
+        }
+        }else{
+                return Helpers::Get_Response(403, 'error', trans('messages.event_required'), [], []);
+        }
+        $event= Event::where('id',$event_id)->with('workshops')->get();
+        return Helpers::Get_Response(200, 'success', '', '', $event);
+    }
 }

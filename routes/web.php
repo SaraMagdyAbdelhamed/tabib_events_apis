@@ -136,6 +136,7 @@ $router->group(['prefix' => 'api', 'middleware' => 'EventakomAuth'], function ()
     $router->post('survey_answer', 'SurveysController@add');
     $router->post('survey_users', 'SurveysController@survey_users');
     $router->post('getUserEventsSurveys', 'EventsController@getUserEventsSurveys');
+    $router->post('eventWorkshops', 'EventsController@eventWorkshops');
     //users routes
     $router->post('logout', 'UsersController@logout');
     $router->post('change_lang', 'UsersController@change_lang');

@@ -44,6 +44,8 @@ return [
 	'current_available_tickets'=>'لايوجد تذاكر متاحة للحجز',
 	'category_not_found'=>'هذا التصنيف غير موجود',
 	'category_required'=>'يجب اختيار  التصنيف',
+	'event_not_found'=>'هذا الحدث غير موجود',
+	'event_required'=>'يجب اختيار  الحدث',
 	 'noevents'=>'لا يوجد احداث',
 	 'noregions'=>'لا يوجد مناطق متاحه '
 
