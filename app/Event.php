@@ -61,7 +61,7 @@ class Event extends Model {
 
     public function workshops()
     {
-        return $this->hasMany('App\Workshop','event_id');
+        return $this->belongsToMany('App\Workshop','event_workshops','event_id','work_shop_id');
     }
     /** End Relations Section */
 
