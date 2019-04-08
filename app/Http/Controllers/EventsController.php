@@ -629,10 +629,11 @@ class EventsController extends Controller
         if (!$event) {
             return Helpers::Get_Response(403, 'error', trans('messages.event_not_found'), [], []);
         }
+        $events= Event::where('id',$event_id)->with('workshops')->get();
         }else{
-                return Helpers::Get_Response(403, 'error', trans('messages.event_required'), [], []);
+        $events = Event::with('workshops')->get();
         }
-        $event= Event::where('id',$event_id)->with('workshops')->get();
-        return Helpers::Get_Response(200, 'success', '', '', $event);
+        
+        return Helpers::Get_Response(200, 'success', '', '', $events);
     }
 }
